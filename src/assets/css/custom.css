@@ -1,0 +1,1226 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap');
+
+/* --- BASE THEME VARIABLES (Light Mode: Parchment & Navy) --- */
+:root {
+    --font-serif: 'Playfair Display', serif;
+    --font-sans: 'Inter', sans-serif;
+    --bg-main: #fdfcf8;          /* Parchment Off-White */
+    --bg-surface: #ffffff;       /* Pure white for article cards */
+    --text-main: #222222;        /* Soft Black for readability */
+    --text-muted: #666666;
+    --accent-color: #002147;     /* Midnight Navy */
+    --border-color: rgba(0, 0, 0, 0.1);
+    
+    /* Tag Colors (Light Mode) */
+    --tag-econ: #1b4d3e;         /* Deep Forest Green */
+    --tag-policy: #8b0000;       /* Crimson */
+    --tag-tech: #d97706;         /* Amber/Gold */
+}
+
+/* --- DARK MODE VARIABLES (Pure Black & Electric Blue) --- */
+body.dark-mode {
+    --bg-main: #000000;          /* AP News Pure Black */
+    --bg-surface: #111111;       /* Slightly elevated black for cards */
+    --text-main: #dddddd;        /* Soft White */
+    --text-muted: #888888;
+    --accent-color: #00a8ff;     /* Electric Blue */
+    --border-color: rgba(255, 255, 255, 0.1);
+
+    /* Tag Colors (Dark Mode - Brighter for contrast) */
+    --tag-econ: #00ff7f;         /* Spring Green */
+    --tag-policy: #ff6b6b;       /* Bright Crimson */
+    --tag-tech: #fbbf24;         /* Bright Amber */
+}
+
+/* --- DARK MODE IMAGE INVERSION --- */
+/* Mellowed shift to Electric Blue to preserve fine anti-aliased lines */
+body.dark-mode #junto-master-logo img {
+    /* Reduced saturation, softened contrast, and dimmed the white glow to 20% */
+    filter: invert(33%) sepia(60%) saturate(600%) hue-rotate(175deg) brightness(105%) contrast(150%) drop-shadow(0px 0px 6px rgba(255, 255, 255, 0.3)) !important;
+    transition: filter 0.3s ease;
+}
+
+/* Adds a subtle, elegant shadow in Light Mode */
+#junto-master-logo img {
+    filter: drop-shadow(0px 4px 6px rgba(0,0,0,0.5));
+    transition: filter 0.3s ease;
+}
+
+/* --- DARK MODE INPUT & SLIDER STYLING --- */
+body.dark-mode input[type="number"],
+body.dark-mode input[type="text"],
+body.dark-mode select {
+    color: var(--accent-color); /* Turns the text Electric Blue */
+    background-color: rgba(255, 255, 255, 0.05); /* Slight contrast background */
+    border-color: var(--border-color);
+    font-weight: bold;
+}
+
+body.dark-mode input:focus,
+body.dark-mode select:focus {
+    border-color: var(--accent-color);
+    box-shadow: inset 0 0 0 1px var(--accent-color);
+}
+
+/* Style the standalone sliders */
+input[type="range"] {
+    width: 100%;
+    accent-color: var(--accent-color); 
+}
+
+/* --- APPLY THE VARIABLES & FONTS --- */
+body, #wrapper {
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    font-family: var(--font-sans); /* Clean Sans-Serif for body text */
+}
+
+/* Force Headers to use the Historic Serif Font */
+h1, h2, h3, h4, h5, h6, .post header .title h2 {
+    font-family: var(--font-serif);
+    color: var(--text-main);
+    font-weight: 700;
+}
+
+/* The Junto Press Masthead Styling */
+#header h1 {
+    font-weight: 900;
+    font-size: 1.8em;
+    letter-spacing: 0.5px;
+    margin: 0;
+}
+
+#header h1 a {
+    color: var(--text-main);
+}
+
+/* Ensure UI elements remain Sans-Serif for high-speed readability */
+input, select, textarea, .button, .calculator-nav a, .stats a {
+    font-family: var(--font-sans) !important;
+}
+
+/* Links & Layout */
+a { color: var(--accent-color); border-bottom-color: transparent; transition: color 0.2s ease; }
+a:hover { color: var(--text-main); }
+
+#header, #menu {
+    background-color: var(--bg-surface);
+    border-bottom: solid 1px var(--border-color);
+}
+
+/* Override the default teal buttons */
+input[type="submit"].primary, .button.primary, .button.large.next, .button.large.previous {
+    box-shadow: inset 0 0 0 2px var(--accent-color);
+    color: var(--accent-color) !important;
+}
+input[type="submit"].primary:hover, .button.primary:hover {
+    background-color: var(--accent-color);
+    color: var(--bg-surface) !important;
+}
+
+/* Dynamic Tag Colors */
+.tag-economics { box-shadow: inset 0 0 0 1px var(--tag-econ); color: var(--tag-econ) !important; }
+.tag-economics:hover { background-color: var(--tag-econ); color: var(--bg-main) !important; }
+
+.tag-policy { box-shadow: inset 0 0 0 1px var(--tag-policy); color: var(--tag-policy) !important; }
+.tag-policy:hover { background-color: var(--tag-policy); color: var(--bg-main) !important; }
+
+.tag-infrastructure { box-shadow: inset 0 0 0 1px var(--tag-tech); color: var(--tag-tech) !important; }
+.tag-infrastructure:hover { background-color: var(--tag-tech); color: var(--bg-main) !important; }
+
+/* --- CUSTOM HIGHLIGHT (Text Selection) --- */
+::selection {
+    background-color: var(--accent-color);
+    color: var(--bg-surface);
+}
+::-moz-selection {
+    background-color: var(--accent-color);
+    color: var(--bg-surface);
+}
+
+/* --- DYNAMIC ARTICLE BORDERS --- */
+.post { border-top: 4px solid var(--border-color) !important; }
+
+/* Added !important so these overpower the Dark Mode defaults */
+.post.tag-border-economics { border-top-color: var(--tag-econ) !important; }
+.post.tag-border-policy { border-top-color: var(--tag-policy) !important; }
+.post.tag-border-infrastructure { border-top-color: var(--tag-tech) !important; }
+
+/* --- BROADSHEET LAYOUT ENGINE (V2) --- */
+
+/* 1. Force the Box Model (Stops the sidebar from dropping) */
+#wrapper, #header, #main, #sidebar, .post {
+    box-sizing: border-box !important;
+}
+
+/* 2. The Main Container (Widened to 1400px for breathing room) */
+#wrapper {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: space-between !important;
+    max-width: 1400px !important; 
+    margin: 0 auto !important;
+    padding: 0 2em !important;
+}
+
+/* 3. The Sticky Masthead (The Nuclear Template Override) */
+#header {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: auto !important; /* Kills the template's squished 3.5em height */
+    display: flex !important;
+    flex-direction: column !important; /* Forces the Title and Links to stack vertically */
+    align-items: center !important;
+    background-color: var(--bg-surface) !important;
+    z-index: 10000 !important;
+    padding: 1.5em 0 0 0 !important;
+    margin: 0 !important;
+    border-bottom: 1px solid var(--border-color) !important;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03) !important;
+}
+
+/* Ensure the title doesn't float away */
+#header h1 {
+    float: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    text-align: center !important;
+}
+
+/* 4. Push the website down so the fixed header doesn't cover the articles */
+#wrapper {
+    padding-top: 200px !important; 
+}
+
+/* 5. Nuke the template's weird navigation boundaries */
+#header .links, #header .main {
+    position: static !important;
+    border: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: flex !important;
+    width: auto !important;
+    height: auto !important;
+}
+
+#header .links ul, #header .main ul {
+    display: flex !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+#header .links ul li, #header .main ul li {
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+}
+
+#header .links a { color: var(--text-main) !important; }
+#header .links a:hover { color: var(--accent-color) !important; }
+
+/* 4. The Article Feed (Strict 65%) */
+#main {
+    width: 65% !important;
+    max-width: 65% !important;
+    flex: 0 0 65% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* 5. The Sidebar (Strict 30%) */
+#sidebar {
+    width: 30% !important;
+    max-width: 30% !important;
+    flex: 0 0 30% !important;
+    margin: 0 !important;
+    padding-left: 0 !important;
+}
+
+/* 6. Mobile Stack (Single column for iPhones) */
+@media screen and (max-width: 980px) {
+    #main, #sidebar {
+        width: 100% !important;
+        max-width: 100% !important;
+        flex: 0 0 100% !important;
+    }
+    #sidebar {
+        margin-top: 3em !important;
+        border-top: 1px solid var(--border-color);
+        padding-top: 2em !important;
+    }
+    #wrapper { padding: 0 1em !important; }
+}
+
+/* --- COMPACT HEADER (Shrink on Scroll) --- */
+
+/* Add smooth transitions to the elements we want to shrink */
+#header { transition: padding 0.3s ease !important; }
+#header h1 { transition: font-size 0.3s ease !important; }
+#header p { transition: opacity 0.2s ease, height 0.3s ease, margin 0.3s ease !important; overflow: hidden; }
+#header .links a { transition: padding 0.3s ease !important; }
+
+/* The Compact Class (Applied automatically by JavaScript) */
+#header.compact {
+    padding: 0.8em 0 0 0 !important; /* Reduces top padding */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08) !important; /* Slightly stronger shadow when scrolling */
+}
+
+#header.compact h1 {
+    font-size: 1.5em !important; /* Shrinks the main title */
+    margin-bottom: 0.2em !important;
+}
+
+#header.compact p {
+    opacity: 0 !important; /* Fades out the subtitle */
+    height: 0 !important; /* Collapses the subtitle's physical space */
+    margin: 0 !important;
+}
+
+/* Shrink the padding on the links to save vertical space */
+#header.compact .links a {
+    padding: 0.5em 0 !important; 
+}
+
+/* --- BULLETPROOF DARK MODE CONTRAST --- */
+
+/* --- DARK MODE BOLD TEXT OVERRIDE --- */
+body.dark-mode strong,
+body.dark-mode b,
+body.dark-mode .post strong,
+body.dark-mode .post b {
+    color: #ffffff !important; /* Illuminates bold text to pure white */
+    font-weight: 800 !important; /* Forces maximum thickness */
+}
+
+/* Forces the article cards to obey your custom theme variables */
+.post {
+    background-color: var(--bg-surface) !important;
+    border: 1px solid var(--border-color) !important;
+    border-top: 4px solid var(--border-color) !important; /* Preserves your dynamic tags */
+}
+
+/* Forces all text, titles, and dates inside the card to use the correct contrast */
+.post h1, .post h2, .post h3, .post p, .post header .title h2, .post header .title p, .post time, .post .author .name {
+    color: var(--text-main) !important;
+}
+
+/* Fixes the internal borders of the article header */
+.post header {
+    border-color: var(--border-color) !important;
+    background-color: transparent !important;
+}
+.post header .meta {
+    border-left-color: var(--border-color) !important;
+    background-color: transparent !important;
+}
+
+/* Overrides the 'Continue Reading' button text color in Dark Mode */
+.post .actions .button {
+    color: var(--text-main) !important;
+    box-shadow: inset 0 0 0 2px var(--border-color) !important;
+}
+.post .actions .button:hover {
+    color: var(--accent-color) !important;
+    box-shadow: inset 0 0 0 2px var(--accent-color) !important;
+}
+
+/* --- THE SINGLE ARTICLE LAYOUT FIX --- */
+/* If a page (like a standalone article) does not have a sidebar, 
+   this automatically expands and centers the content to a perfect reading width. */
+body.single #main {
+    width: 100% !important;
+    max-width: 1200px !important; /* The optimal width for reading long-form text */
+    flex: 0 0 100% !important;
+    margin: 0 auto !important;
+    float: none !important;
+}
+
+/* --- DYNAMIC HEADER CLEARANCE (The Foolproof Body Padding) --- */
+/* Removes the glitchy wrapper padding */
+#wrapper {
+    padding-top: 0 !important; 
+}
+
+/* 1. Desktop Clearance (Massive Masthead) */
+@media screen and (min-width: 1281px) {
+    body {
+        padding-top: 260px !important; 
+    }
+    body:has(#header.compact) {
+        padding-top: 150px !important; /* Smoothly reclaims space when scrolling */
+        transition: padding-top 0.3s ease;
+    }
+}
+
+/* 2. Mobile & Tablet Clearance (Compact Masthead) */
+@media screen and (max-width: 1280px) {
+    body {
+        padding-top: 6em !important; 
+    }
+}
+
+/* =========================================
+   THE ULTIMATE RESPONSIVE LOCKDOWN (V4)
+   ========================================= */
+
+/* 1. Global Reset & Screen Bleed Prevention */
+html, body {
+    overflow-x: hidden !important;
+    width: 100% !important;
+    margin: 0 !important; 
+}
+
+#wrapper, #wrapper * {
+    box-sizing: border-box !important;
+}
+
+/* 2. The Standalone Page Trap (Kills the Footer Squish) */
+body.single #wrapper {
+    display: block !important; /* Forces the flex grid to turn off on standalone pages */
+}
+
+body.single #footer {
+    width: 100% !important;
+    margin-top: 4em !important;
+    padding-top: 2em !important;
+    border-top: 1px solid var(--border-color) !important;
+}
+
+/* 3. Desktop Grid Enforcement (SIDEBAR ON THE LEFT) */
+@media screen and (min-width: 1281px) {
+    
+    /* Only apply Flexbox to pages that actually have a sidebar (like the Index) */
+    body:not(.single) #wrapper {
+        display: flex !important;
+        flex-direction: row !important; 
+        flex-wrap: nowrap !important;
+        justify-content: space-between !important;
+        align-items: flex-start !important;
+    }
+    
+    #sidebar {
+        order: -1 !important; 
+        padding-right: 3em !important; 
+    }
+    
+    #main {
+        order: 2 !important; 
+    }
+}
+
+/* 3. iPad & Mobile Stacking (1280px and below) */
+@media screen and (max-width: 1280px) {
+    
+    /* Force vertical stacking */
+    #wrapper {
+        display: block !important;
+        padding-top: 6em !important; 
+        padding-left: 1.5em !important;
+        padding-right: 1.5em !important;
+        width: 100% !important;
+    }
+    
+    /* Fix the offset Main column */
+    #main, #sidebar, body.single #main {
+        display: block !important;
+        float: none !important; /* Kills the template's invisible leftward magnetic pull */
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 auto !important; /* Enforces true centering */
+        padding: 0 !important;
+    }
+
+    #sidebar {
+        margin-top: 3em !important;
+        padding-top: 2em !important;
+        border-top: 1px solid var(--border-color) !important;
+    }
+
+    /* --- NEW: THE PAGINATION & BUTTON BLEED FIX --- */
+    ul.actions, ul.pagination, .actions li {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin-left: 0 !important; /* Kills the negative margin pulling the screen */
+        margin-right: 0 !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        display: flex !important;
+        flex-direction: column !important; /* Stacks buttons vertically on mobile */
+    }
+    .actions li a, .actions li button, .actions li input, .pagination a {
+        width: 100% !important;
+        box-sizing: border-box !important;
+        margin-bottom: 1em !important;
+        text-align: center !important;
+    }
+
+    /* --- THE POST CARD STRAITJACKET --- */
+    .post, #main > .post {
+        display: block !important;
+        float: none !important; 
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        border: 1px solid var(--border-color) !important;
+        border-radius: 4px !important; 
+        margin: 0 0 2em 0 !important; /* Locks left/right margins to absolute zero */
+        padding: 1.5em !important; 
+        overflow-wrap: break-word !important; 
+        overflow-x: hidden !important;
+        transform: none !important; /* Kills the template's hidden leftward warp */
+        left: 0 !important;
+    }
+
+    /* Stop internal text/images from piercing the sides */
+    .post > * {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        max-width: 100% !important;
+    }
+
+    /* --- THE HEADER ALIGNMENT & LETTER-SPACING FIX --- */
+    .post > header {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important; /* Forces physical centering */
+        text-align: center !important;
+        margin: 0 0 1.5em 0 !important; 
+        padding: 0 !important;
+        border: none !important;
+        width: 100% !important;
+    }
+
+    .post > header .title {
+        position: static !important; 
+        width: 100% !important;
+        padding: 0 0 1em 0 !important;
+        border-right: none !important;
+        border-bottom: 1px solid var(--border-color) !important; 
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important; /* Enforces absolute center */
+    }
+
+    .post > header .title h2, 
+    .post > header .title h2 a,
+    .post > header .title p {
+        position: static !important;
+        text-align: center !important;
+        white-space: normal !important;
+        /* THE MAGIC NUDGE: Balances the invisible letter-spacing on the right */
+        padding-left: 0.25em !important; 
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        text-indent: 0 !important;
+        transform: none !important;
+    }
+
+    .post > header .title h2:before, 
+    .post > header .title h2:after { display: none !important; }
+
+    /* Centers the Date and Author Icon */
+    .post > header .meta {
+        position: static !important;
+        width: 100% !important;
+        min-width: 0 !important; 
+        padding: 1.5em 0 0 0 !important;
+        border-left: none !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important; /* Changed from flex-start to perfectly center the date */
+    }
+
+    /* --- THE SIDEBAR BLEED & TYPOGRAPHY FIX --- */
+    #sidebar .posts { display: block !important; width: 100% !important; }
+    #sidebar .posts li {
+        display: block !important;
+        width: 100% !important;
+        padding: 1.5em 0 !important;
+        border: none !important;
+    }
+    
+    #sidebar .posts article,
+    #sidebar .posts article header {
+        display: block !important;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    /* Injects breathing room and proper line-height into the titles */
+    #sidebar .posts article header h4,
+    #sidebar .posts article header h4 a {
+        display: block !important;
+        width: 100% !important;
+        white-space: normal !important;
+        word-wrap: break-word !important;
+        overflow-wrap: break-word !important;
+        margin: 0 0 0.3em 0 !important; /* Adds a gap below the title */
+        padding: 0 !important;
+        line-height: 1.4 !important; /* Fixes the uneven, squished text */
+    }
+
+    /* Pushes the category tag down slightly so it doesn't touch the title */
+    #sidebar .posts article header time, 
+    #sidebar .posts article header .published {
+        display: inline-block !important;
+        margin-top: 0.3em !important;
+        line-height: 1.2 !important;
+    }
+
+    #newsletter-zone, #newsletter-zone form, #newsletter-zone input {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    /* --- MASTHEAD MOBILE ADJUSTMENTS --- */
+    #header h1 a { font-size: 0.8em !important; }
+    #header p { font-size: 0.7em !important; letter-spacing: 1px !important; }
+    #header > div:nth-child(2) > div > div:first-child { display: none !important; }
+    
+    #header .links {
+        flex: 1 !important;
+        justify-content: flex-start !important;
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important; 
+        scrollbar-width: none; 
+        margin-right: 1em !important;
+    }
+    #header .links::-webkit-scrollbar { display: none; }
+    #header .links ul { gap: 1.5em !important; padding-right: 2em !important; }
+    #header .main { flex: 0 0 auto !important; }
+    #header .main ul li a { padding: 0 1em !important; }
+    /* Adds a visual fade to the right side of the mobile menu to indicate swiping */
+    #header .links {
+        -webkit-mask-image: linear-gradient(to right, black 85%, transparent 100%) !important;
+        mask-image: linear-gradient(to right, black 85%, transparent 100%) !important;
+    }
+}
+
+/* =========================================================
+   4. STRICT MOBILE OVERRIDES (Kills the 736px Template Ghost)
+   ========================================================= */
+@media screen and (max-width: 768px) {
+    
+    /* Forces the wrapper to maintain its padding on phones */
+    #wrapper {
+        padding-left: 1.25em !important;
+        padding-right: 1.25em !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Kills negative margins on the physical card */
+    #main > .post, 
+    #main .post, 
+    .post {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        left: 0 !important;
+        transform: none !important;
+        position: static !important;
+    }
+
+    /* THE SMOKING GUN FIX: Kills the invisible leftward shift on the text container */
+    .post > header, 
+    #main > .post > header,
+    .post > header .title {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Restores the breathing room between the text and the divider line */
+    .post > header .title {
+        padding-bottom: 1.5em !important; 
+    }
+}
+
+/* =========================================================
+   THE GARBAGE COLLECTOR (Kills Empty Grey Pagination Boxes)
+   ========================================================= */
+/* Automatically collapses any layout box that lacks data */
+.post:empty,
+ul.pagination:empty,
+.post > header:empty,
+.post > header .title:empty {
+    display: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+}
+
+/* =========================================================
+   THE ABSOLUTE TEXT CENTERING OVERRIDE
+   ========================================================= */
+@media screen and (max-width: 1280px) {
+    
+    /* 1. Neutralize the template's hidden leftward drag on containers */
+    .post > header, 
+    #main > .post > header, 
+    .post > header .title, 
+    .post > header .meta {
+        position: static !important;
+        left: 0 !important;
+        right: 0 !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        transform: none !important;
+        text-align: center !important;
+    }
+
+    /* 2. Counter-weight the letter-spacing to find true mathematical center */
+    .post > header .title h1,
+    .post > header .title h2,
+    .post > header .title p,
+    .post > header .title a {
+        width: 100% !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        text-align: center !important;
+        /* text-indent is mathematically superior to padding for balancing letter-spacing */
+        text-indent: 0.25em !important; 
+        display: block !important;
+    }
+
+    /* 3. Keep the divider line centered */
+    .post > header .title {
+        padding-bottom: 1.5em !important;
+        border-bottom: 1px solid var(--border-color) !important;
+    }
+    
+    /* 4. Center Author and Date Clusters */
+    .post > header .meta {
+        padding-top: 1.5em !important;
+        border-left: none !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+    
+    .post > header .meta > * {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        text-align: center !important;
+        border-left: none !important; /* Removes vertical divider lines between author/date on mobile */
+    }
+}
+
+/* =========================================
+   THE DYNAMIC ACCENT OVERRIDES (Replaces Gold & Teal)
+   ========================================= */
+/* 1. Kills Teal on Title, Article Headings, and TOC Links */
+a:hover,
+#header h1 a:hover,
+#header .links ul li a:hover,
+.post > header .title h2 a:hover,
+.post > header .title h3 a:hover,
+#sidebar .posts article header h4 a:hover,
+.toc a:hover {
+    color: var(--accent-color) !important;
+}
+
+/* =========================================
+   THE NUCLEAR IOS GHOST BOX EXORCISM (V2)
+   ========================================= */
+
+/* 1. Eradicate tap highlights and native touch callouts globally */
+* {
+    -webkit-tap-highlight-color: transparent !important;
+    -webkit-touch-callout: none !important;
+}
+
+/* 2. Destroy the browser's default accessibility outline on touch */
+*:focus, *:active, *:focus-visible {
+    outline: none !important;
+}
+
+/* 3. Broad spectrum outline killer for interactive elements */
+button, a, .icon, svg, path {
+    outline: none !important;
+}
+
+/* 4. Attribute-level sniper: Kills shadows on any element functioning as a close button */
+[class*="close"], [class*="dismiss"], [aria-label*="lose"], [aria-label*="ismiss"], [id*="close"] {
+    -webkit-appearance: none !important;
+    appearance: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+    background-color: transparent !important;
+}
+
+/* 2. Kills Teal on Header Icons (Dark Mode, Search, Hamburger) */
+#header .main ul li a:hover,
+#header .main ul li a:hover:before {
+    color: var(--accent-color) !important;
+}
+
+/* 3. Premium Ghost Button Hover (Fixes vanishing text) */
+a.button:hover,
+.post footer .actions a.button:hover,
+.pagination a.button:hover,
+input[type="submit"]:hover,
+input[type="button"]:hover,
+button:hover {
+    color: var(--accent-color) !important;
+    border-color: var(--accent-color) !important;
+    background-color: transparent !important; 
+}
+
+/* 4. Kills the teal underline on standard text links */
+p a:hover {
+    border-bottom-color: var(--accent-color) !important;
+}
+
+/* 5. Kills Teal Focus Rings (When clicking inputs/outside boxes) */
+*:focus {
+    outline-color: var(--accent-color) !important;
+}
+input:focus, select:focus, textarea:focus, .button:focus, a:focus {
+    border-color: var(--accent-color) !important;
+    box-shadow: inset 0 0 0 1px var(--accent-color) !important;
+    outline: none !important;
+}
+
+/* 6. Kills Teal on Footer Icons (Twitter, Mail, Secure) */
+#footer .icons a:hover,
+#footer .icons a:hover:before,
+.icon:hover,
+.icon:hover:before {
+    color: var(--accent-color) !important;
+}
+
+/* 7. Kills Teal on Article Author Names */
+.post > header .meta .author:hover .name,
+.author:hover .name,
+.post > header .meta .author:hover {
+    color: var(--accent-color) !important;
+    border-bottom-color: transparent !important;
+}
+
+/* 8. Kills Teal on Sidebar & Menu (Mathematical Tools Heading) */
+#menu .links > li a:hover h3,
+#menu .links > li a:hover p,
+#sidebar .links > li a:hover h3,
+#sidebar .links > li a:hover p,
+#menu section a:hover h3,
+#sidebar section a:hover h3 {
+    color: var(--accent-color) !important;
+}
+
+/* 9. Kills the visible hitbox/focus ring on Header Utility Icons */
+#header .main ul li a:focus,
+#header .main ul li a:active {
+    box-shadow: none !important;
+    border-color: transparent !important;
+    background-color: transparent !important;
+    outline: none !important;
+}
+
+/* =========================================
+   THE FINAL TEAL EXORCISM & CENTERING FIXES
+   ========================================= */
+
+/* 5. Center the Category / Topics Heading on Standalone Pages */
+body.single #main > header,
+body.single #main > .pagination {
+    text-align: center !important;
+    width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+/* Counter-weight the letter-spacing on Category titles so they sit dead center */
+body.single #main > header h1,
+body.single #main > header h2 {
+    text-indent: 0.25em !important; 
+    margin-bottom: 1em !important;
+}
+
+
+/* =========================================================
+   THE DATA FORMATTING OVERRIDES (Tables, Code, & Quotes)
+   ========================================================= */
+
+/* 1. Prevent Code Block Decapitation */
+pre {
+    max-width: 100% !important;
+    overflow-x: auto !important; /* Forces horizontal scrolling for long code */
+    -webkit-overflow-scrolling: touch !important; /* Smooth scroll on iOS */
+    background: rgba(128, 128, 128, 0.05) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 4px !important;
+    padding: 1.5em !important;
+    margin: 0 0 2em 0 !important;
+}
+
+code {
+    background: rgba(128, 128, 128, 0.08) !important;
+    border: 1px solid var(--border-color) !important;
+    color: var(--text-main) !important;
+    font-family: 'Courier New', Courier, monospace !important;
+    padding: 0.2em 0.4em !important;
+    border-radius: 3px !important;
+}
+
+/* 2. The Table Blackout Fix (Ensures Probability/Econ tables adapt to Dark Mode) */
+table {
+    width: 100% !important;
+    max-width: 100% !important;
+    border-collapse: collapse !important;
+    margin: 0 0 2em 0 !important;
+    overflow-x: auto !important;
+    display: block !important; /* Forces tables to scroll horizontally on small phones */
+}
+
+table th {
+    color: var(--text-main) !important;
+    font-family: var(--font-sans) !important;
+    font-weight: 700 !important;
+    border-bottom: 2px solid var(--border-color) !important;
+    padding: 1em !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+}
+
+table td {
+    color: var(--text-main) !important;
+    border-top: 1px solid var(--border-color) !important;
+    padding: 1em !important;
+}
+
+/* Intelligent Zebra Striping that adapts to Dark Mode */
+table tbody tr:nth-child(2n + 1) {
+    background-color: rgba(128, 128, 128, 0.03) !important;
+}
+
+/* 3. Thematic Blockquotes (Inherits the Gold/Navy accents) */
+blockquote {
+    border-left: 4px solid var(--accent-color) !important;
+    color: var(--text-main) !important;
+    font-family: var(--font-serif) !important;
+    font-size: 1.1em !important;
+    font-style: italic !important;
+    margin: 0 0 2em 0 !important;
+    padding: 1em 0 1em 1.5em !important;
+    background: rgba(128, 128, 128, 0.02) !important;
+}
+
+/* 4. Fix Phantom Disabled Buttons */
+.button.disabled, 
+.button:disabled,
+input[type="submit"].disabled,
+input[type="button"].disabled {
+    pointer-events: none !important;
+    background-color: rgba(128, 128, 128, 0.05) !important;
+    color: var(--text-muted) !important;
+    box-shadow: inset 0 0 0 1px var(--border-color) !important;
+    opacity: 0.6 !important;
+}
+
+/* 5. Fix Featured Images on Standalone Articles */
+/* Nuke the template's negative margin pull on the main header image */
+.post > a.image.featured, 
+.post > .image.featured {
+    margin: 0 0 2em 0 !important;
+    width: 100% !important;
+    border-radius: 4px !important;
+    overflow: hidden !important;
+}
+.post > a.image.featured img, 
+.post > .image.featured img {
+    width: 100% !important;
+    display: block !important;
+}
+
+/* =========================================================
+   THE PAGE TITLE OVERRIDE (Kills empty boxes on Author/Category pages)
+   ========================================================= */
+
+/* 1. Intelligently strips the box formatting from any card acting as a standalone title */
+.post:has(> header:only-child),
+body.single #main > .post:first-child:not(:has(p, .image, .meta)),
+body.single #main > header.main {
+    background-color: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 auto 2em auto !important;
+    box-shadow: none !important;
+}
+
+/* 2. Removes the internal divider line and enforces absolute centering */
+.post:has(> header:only-child) > header .title,
+body.single #main > .post:first-child:not(:has(p, .image, .meta)) > header .title,
+body.single #main > header.main .title {
+    border-bottom: none !important;
+    padding-bottom: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+/* 3. Counter-weights the tracking (letter-spacing) for a perfect mathematical center */
+.post:has(> header:only-child) > header .title h2,
+body.single #main > .post:first-child:not(:has(p, .image, .meta)) > header .title h2 {
+    text-indent: 0.25em !important;
+    margin: 0 !important;
+}
+
+/* =========================================================
+   THE Z-INDEX OVERRIDE (Fixes Search & Menu Layering)
+   ========================================================= */
+
+/* 1. Force the sliding Sidebar Menu to always sit above the fixed Header */
+#menu {
+    z-index: 100005 !important;
+}
+
+/* 2. Float the Header Search Input so it isn't buried by the Header's background */
+#header #search.visible {
+    position: absolute !important;
+    top: 100% !important; /* Drops the search box right below the top navigation bar */
+    right: 1.5em !important;
+    background-color: var(--bg-surface) !important;
+    padding: 0.5em 1em !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 4px !important;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15) !important;
+    z-index: 100000 !important;
+}
+
+/* 3. Ensure Pagefind search results dropdown also floats above everything */
+.pagefind-ui__drawer {
+    position: relative !important;
+    z-index: 100000 !important;
+}
+
+/* =========================================
+   THE JUNTO BOOK CLUB GRID LAYOUT (V5 - FLEXBOX)
+   ========================================= */
+
+.book-grid {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important; /* Mathematically centers orphan books */
+    gap: 2.5em 1.5em !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+}
+
+.book-card {
+    /* Rigidly locks the card to 150px to force 5 per row on desktop */
+    flex: 0 0 150px !important;
+    width: 150px !important;
+    max-width: 150px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    border-bottom: none !important;
+    transition: transform 0.3s ease, opacity 0.3s ease !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.book-card:hover {
+    transform: translateY(-6px) !important;
+    opacity: 0.9 !important;
+}
+
+.book-cover {
+    background: rgba(128,128,128,0.05) !important;
+    aspect-ratio: 2 / 3 !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 4px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 0 auto 1.2em auto !important;
+    box-shadow: 2px 5px 15px rgba(0,0,0,0.05) !important;
+    color: var(--text-muted) !important;
+    font-size: 0.8em !important;
+    object-fit: cover !important;
+    width: 100% !important;
+    max-width: 150px !important;
+}
+
+/* Typographic Fix: Mathematical Height Lock + Line Clamp */
+.book-card h4 {
+    font-family: var(--font-serif) !important;
+    font-size: 1.1em !important;
+    margin: 0 0 0.4em 0 !important;
+    line-height: 1.2 !important;
+    
+    /* THE FAILSAFE: Physically locks the box to exactly 2 lines of text */
+    min-height: 2.4em !important; 
+    max-height: 2.4em !important; 
+    
+    color: var(--text-main) !important;
+    width: 100% !important;
+    
+    /* Natural word wrapping */
+    white-space: normal !important;
+    overflow-wrap: break-word !important;
+    
+    /* The Webkit Clamp (No !important flags to satisfy the CSS linter) */
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden !important;
+}
+
+.book-card p {
+    font-family: var(--font-sans) !important;
+    font-size: 0.85em !important;
+    margin: 0 !important;
+    color: var(--text-muted) !important;
+    line-height: 1.4 !important;
+    width: 100% !important;
+    
+    /* Single Line Engine: Strict 1 Line for Authors */
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+/* Ensure 2 books still fit side-by-side on very small iPhones */
+@media screen and (max-width: 600px) {
+    .book-card {
+        flex: 0 1 140px !important;
+        max-width: 140px !important;
+    }
+    .book-grid { gap: 2em 1em !important; }
+}
+
+/* Add smooth scrolling globally so the anchor links glide gracefully */
+html {
+    scroll-behavior: smooth !important;
+}
+
+/* The Spotlight Box Pulse Animation */
+@keyframes spotlightPulse {
+    0% { box-shadow: 0 0 0 0 rgba(0, 168, 255, 0.4); }
+    70% { box-shadow: 0 0 0 10px rgba(0, 168, 255, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(0, 168, 255, 0); }
+}
+.spotlight-pulse {
+    animation: spotlightPulse 3s infinite;
+}
+
+/* =========================================
+   THE COMPACT AUTHOR BOOK GRID (FLEXBOX V3)
+   ========================================= */
+
+.compact-book-grid {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important; /* Centers uneven rows */
+    gap: 2em 1.5em !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    margin: 0 auto 2em auto !important;
+    padding: 0 !important;
+}
+
+.compact-book-card {
+    /* Hard-locks the width to exactly 130px to force a 4-column layout */
+    flex: 0 0 130px !important; 
+    width: 130px !important; /* Kills the 100% bug */
+    max-width: 130px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important; 
+    text-align: center !important;
+    border-bottom: none !important;
+    transition: transform 0.2s ease !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.compact-book-card:hover {
+    transform: translateY(-4px) !important;
+}
+
+.compact-book-cover {
+    background: rgba(128,128,128,0.05) !important;
+    aspect-ratio: 2 / 3 !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 3px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 0 auto 0.8em auto !important; 
+    box-shadow: 2px 4px 10px rgba(0,0,0,0.04) !important;
+    color: var(--text-muted) !important;
+    font-size: 0.7em !important;
+    object-fit: cover !important;
+    width: 100% !important;
+    max-width: 100px !important;
+}
+
+/* Typographic Fix: Mathematical Height Lock + Line Clamp */
+.compact-book-card h4 {
+    font-family: var(--font-serif) !important;
+    font-size: 0.95em !important;
+    margin: 0 0 0.3em 0 !important;
+    line-height: 1.2 !important;
+    
+    /* THE FAILSAFE: Physically locks the box to exactly 2 lines of text */
+    min-height: 2.4em !important;
+    max-height: 2.4em !important;
+    
+    color: var(--text-main) !important;
+    width: 100% !important;
+    
+    /* Natural word wrapping */
+    white-space: normal !important;
+    overflow-wrap: break-word !important;
+    
+    /* The Webkit Clamp (No !important flags to satisfy the CSS linter) */
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden !important;
+}
+
+.compact-book-card p {
+    font-family: var(--font-sans) !important;
+    font-size: 0.75em !important;
+    margin: 0 !important;
+    color: var(--text-muted) !important;
+    line-height: 1.3 !important;
+    width: 100% !important;
+    
+    /* Single Line Engine: Strict 1 Line for Authors */
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}

@@ -1,0 +1,517 @@
+---
+pagination:
+  data: collections.posts
+  size: 5
+  alias: pagedPosts
+  reverse: true
+---
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <script>
+            if (localStorage.getItem('theme') === 'dark') {
+                document.documentElement.classList.add('dark-mode');
+            }
+        </script>
+        <title>The Junto Press</title>
+        <link rel="alternate" type="application/rss+xml" title="The Junto Press RSS Feed" href="/feed.xml" />
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+        <link rel="stylesheet" href="/assets/css/main.css" />
+        <link rel="stylesheet" href="/assets/css/custom.css" />
+        <link rel="manifest" href="/manifest.json" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/app-icon-180.png">
+        <link rel="icon" type="image/png" sizes="192x192" href="/assets/images/app-icon-192.png">
+        <link rel="shortcut icon" href="/assets/images/app-icon-192.png">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    </head>
+    <body class="is-preload">
+        <div id="junto-splash" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: var(--bg-surface); z-index: 999999; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.8s ease, visibility 0.8s ease;">
+    
+            <h1 id="splash-monogram" style="font-family: var(--font-serif); font-size: 4em; font-weight: 900; color: var(--text-main); margin: 0; transition: opacity 0.5s ease, transform 0.8s ease;">
+                TJP
+            </h1>
+            
+            <h1 id="splash-title" style="font-family: var(--font-serif); font-size: 2.5em; font-weight: 900; color: var(--text-main); margin: 0; opacity: 0; position: absolute; transform: scale(0.9); transition: opacity 0.8s ease, transform 0.8s ease; letter-spacing: 1px;">
+                The Junto Press
+            </h1>
+            
+            <p id="splash-date" style="font-family: var(--font-sans); font-size: 0.85em; color: var(--text-muted); text-transform: uppercase; letter-spacing: 3px; margin-top: 1em; opacity: 0; transition: opacity 1s ease 0.3s;"></p>
+
+        </div>
+
+        <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const splash = document.getElementById('junto-splash');
+            
+            // Only show once per session
+            if (window.innerWidth > 768) {
+                splash.style.display = 'none';
+                return;
+            }
+
+            // 2. SESSION OVERRIDE: Only show once per session on mobile
+            if (sessionStorage.getItem('splashShown')) {
+                splash.style.display = 'none';
+                return;
+            }
+            sessionStorage.setItem('splashShown', 'true');
+
+            const monogram = document.getElementById('splash-monogram');
+            const title = document.getElementById('splash-title');
+            const dateEl = document.getElementById('splash-date');
+
+            // Set today's date
+            const options = { month: 'long', day: 'numeric', year: 'numeric' };
+            dateEl.innerText = new Date().toLocaleDateString('en-US', options);
+
+            // The Animation Sequence
+            setTimeout(() => {
+                // Hide Monogram, Show Full Title
+                monogram.style.opacity = '0';
+                monogram.style.transform = 'scale(1.1)';
+                
+                title.style.opacity = '1';
+                title.style.transform = 'scale(1)';
+                
+                // Show Date
+                dateEl.style.opacity = '1';
+            }, 1200);
+
+            setTimeout(() => {
+                // Fade out entire splash screen
+                splash.style.opacity = '0';
+                splash.style.visibility = 'hidden';
+            }, 3500); // Dissolves after 3.5 seconds
+        });
+        </script>
+        <div id="wrapper">
+
+            <header id="header">
+    
+                <div style="text-align: center; margin-bottom: 1.2em; width: 100%;">
+                    <h1 style="margin: 0; line-height: 1;">
+                        <a href="/" style="color: var(--text-main); font-family: var(--font-serif); font-weight: 900; font-size: 2.2em; border: none; letter-spacing: 0.5px;">The Junto Press</a>
+                    </h1>
+                    <p style="font-family: var(--font-sans); font-size: 0.85em; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; margin: 0.5em 0 0 0;">
+                        Politics • Economics • Policy • Culture
+                    </p>
+                </div>
+
+                <div style="border-top: 1px solid var(--border-color); width: 100%; background: var(--bg-surface);">
+                    <div style="max-width: 1400px; margin: 0 auto; padding: 0 2em; display: flex; justify-content: space-between; align-items: center; height: 3.5em;">
+                        
+                        <div style="flex: 1;"></div>
+
+                        <nav class="links" style="flex: 2; display: flex; justify-content: center; height: 100%;">
+                            <ul style="display: flex; gap: 2.5em; list-style: none; height: 100%;">
+                                <li><a href="/" style="font-weight: 600; border-bottom: none; display: flex; align-items: center; height: 100%;">Latest</a></li>
+                                <li><a href="/categories/essays/" style="font-weight: 600; border-bottom: none; display: flex; align-items: center; height: 100%;">Essays</a></li>
+                                <li><a href="/categories/articles/" style="font-weight: 600; border-bottom: none; display: flex; align-items: center; height: 100%;">Articles</a></li>
+                                <li><a href="/authors/" style="font-weight: 600; border-bottom: none; display: flex; align-items: center; height: 100%;">Authors</a></li>
+                                <li><a href="/about/" style="font-weight: 600; border-bottom: none; display: flex; align-items: center; height: 100%;">About</a></li>
+                            </ul>
+                        </nav>
+
+                        <nav class="main" style="flex: 1; display: flex; justify-content: flex-end; height: 100%;">
+                            <ul style="display: flex; list-style: none; align-items: center; height: 100%;">
+                                <li class="theme-toggle" style="border-left: 1px solid var(--border-color); height: 100%;">
+                                    <a href="#" id="darkModeBtn" style="padding: 0 1.5em; border-bottom: none; display: flex; align-items: center; height: 100%;">
+                                        <svg id="icon-moon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: block;"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                                        <svg id="icon-sun" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                                    </a>
+                                </li>
+                                <li class="search" style="border-left: 1px solid var(--border-color); height: 100%;">
+                                    <a class="fa-search" href="#search" style="padding: 0 1.5em; display: flex; align-items: center; height: 100%; border-bottom: none;">Search</a>
+                                    <form id="search" method="get" action="#">
+                                        <input type="text" name="query" id="query" placeholder="Search" />
+                                    </form>
+                                </li>
+                                <li class="menu" style="border-left: 1px solid var(--border-color); height: 100%;">
+                                    <a class="fa-bars" href="#menu" style="padding: 0 1.5em; display: flex; align-items: center; height: 100%; border-bottom: none;">Menu</a>
+                                </li>
+                            </ul>
+                        </nav>
+
+                    </div>
+                </div>
+            </header>
+
+            <section id="menu">
+                <section style="padding: 2em 1em;">
+                    <link href="/_pagefind/pagefind-ui.css" rel="stylesheet">
+                    <script src="/_pagefind/pagefind-ui.js"></script>
+                    <div id="search"></div>
+                    <script>
+                        window.addEventListener('DOMContentLoaded', (event) => {
+                            new PagefindUI({ element: "#search", showSubResults: true });
+                        });
+                    </script>
+                </section>
+
+                <section>
+                    <ul class="links">
+                        <li>
+                            <a href="/tools/risk-of-ruin/">
+                                <h3>Mathematical Tools</h3>
+                                <p>Advantage Play & Risk Analytics</p>
+                            </a>
+                        </li>
+                    </ul>
+                </section>
+
+                <section style="margin-bottom: 2em; padding-bottom: 1.5em; border-bottom: 1px solid var(--border-color);">
+                    <ul class="links">
+                        <li>
+                            <a href="/book-club/">
+                                <h3>The Junto Book Club</h3>
+                                <p>View the Editor Reading Lists</p>
+                            </a>
+                        </li>
+                    </ul>
+                </section>
+
+                <section class="blurb" id="newsletter-zone" style="margin-bottom: 2em; background: rgba(128,128,128,0.03); padding: 1.5em; border-radius: 4px; border: 1px solid var(--border-color);">
+                    <h3 style="font-family: var(--font-serif); font-size: 1.4em; margin-bottom: 0.5em;">The Junto Dispatch</h3>
+                    <p style="font-size: 0.9em; line-height: 1.5; margin-bottom: 1.5em;">Receive our analysis of current events and political commentary directly to your inbox.</p>
+                    
+                    <form
+                        action="https://buttondown.com/api/emails/embed-subscribe/TheJuntoPress"
+                        method="post"
+                        class="embeddable-buttondown-form"
+                        style="display: flex; flex-direction: column; gap: 0.8em; margin: 0;"
+                    >
+                        <input 
+                            type="email" 
+                            name="email" 
+                            id="bd-email" 
+                            placeholder="bfranklin@juntopress.com" 
+                            required 
+                            style="width: 100%; border: 1px solid var(--border-color); padding: 0.7em; border-radius: 4px; font-family: var(--font-sans); background: var(--bg-main);" 
+                        />
+                        <input 
+                            type="submit" 
+                            value="Subscribe" 
+                            class="button fit primary" 
+                            style="font-weight: bold; width: 100%; letter-spacing: 1px;" 
+                        />
+                    </form>
+                </section>
+
+            </section>
+
+            <div id="main">
+                {% for post in pagedPosts %}
+
+                    {% assign primary_tag = "" %}
+                    {% for tag in post.data.tags %}
+                        {% assign t = tag | slugify %}
+                        {% if t != "posts" and t != "essay" and t != "essays" and t != "article" and t != "articles" and t != "opinion" and t != "opinions" %}
+                            {% if primary_tag == "" %}
+                                {% assign primary_tag = t %}
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+
+                    <article class="post tag-border-{{ primary_tag }}">
+                        <header>
+                            <div class="title">
+                                <h2><a href="{{ post.url }}">{{ post.data.title }}</a></h2>
+                                <p>{{ post.data.description }}</p>
+                            </div>
+                            <div class="meta">
+                                <time class="published" datetime="{{ post.date | readableDate }}">{{ post.date | readableDate }}</time>
+                                <span class="published" style="border-left: solid 1px rgba(160, 160, 160, 0.3); margin-left: 1rem; padding-left: 1rem;">
+                                    {{ post.templateContent | readingTime }} Min Read
+                                </span>
+                                <a href="/authors/{{ post.data.author | slugify }}/" class="author">
+                                    <span class="name">{{ post.data.author }}</span>
+                                    {% assign matched_image = "/assets/images/avatar.jpg" %}
+                                    {% for a in authors %}
+                                        {% if a.name == post.data.author %}
+                                            {% assign matched_image = a.image %}
+                                        {% endif %}
+                                    {% endfor %}
+                                    <img src="{{ matched_image }}" alt="{{ post.data.author }}" />
+                                </a>
+                            </div>
+                        </header>
+                        <p>{{ post.data.description }}</p>
+                        <footer>
+                            <ul class="actions">
+                                <li><a href="{{ post.url }}" class="button large">Continue Reading</a></li>
+                            </ul>
+                        </footer>
+                    </article>
+                {% endfor %}
+
+                        <ul class="actions pagination">
+                            <li>
+                                {% if pagination.href.previous %}
+                                    <a href="{{ pagination.href.previous }}" class="button large previous">Previous Page</a>
+                                {% else %}
+                                    <a href="#" class="disabled button large previous">Previous Page</a>
+                                {% endif %}
+                            </li>
+                            <li>
+                                {% if pagination.href.next %}
+                                    <a href="{{ pagination.href.next }}" class="button large next">Next Page</a>
+                                {% else %}
+                                    <a href="#" class="disabled button large next">Next Page</a>
+                                {% endif %}
+                            </li>
+                        </ul>
+
+                    </div>
+
+                <section id="sidebar">
+
+                    <section id="intro" style="text-align: center; padding-bottom: 2em; border-bottom: 1px solid var(--border-color); margin-bottom: 2em;">
+                        
+                        <a href="/" id="junto-master-logo" style="display: block; margin: 0 auto 1.5em auto; width: 75%; max-width: 260px;">
+                            <img src="/assets/images/logo.png" alt="The Junto Press Logo" style="width: 100%; height: auto; display: block;" />
+                        </a>
+                        
+                        <header>
+                            <h2 style="font-family: var(--font-serif); font-size: 2.2em; font-weight: 900; margin-bottom: 0.2em; line-height: 1.1;">
+                                The Junto Press
+                            </h2>
+                            <p style="font-family: var(--font-sans); font-size: 0.85em; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-top: 0.5em;">
+                                Texas
+                            </p>
+                        </header>
+                        <p style="font-size: 0.95em; line-height: 1.6; margin-top: 1em; color: var(--text-main);">
+                            An independent media publication focused on educated discourse and informed commentary—providing consistent coverage of current events, political commentary, and cultural critique.
+                        </p>
+                    </section>
+
+                    <section class="recommended-feed" style="margin-bottom: 2.5em; padding-bottom: 2.5em; border-bottom: 1px solid var(--border-color);">
+                        <h3 style="font-family: var(--font-sans); font-size: 0.8em; text-transform: uppercase; letter-spacing: 2px; color: var(--text-muted); margin-bottom: 1.5em;">Essential Briefings</h3>
+                        
+                        <ul class="posts" style="list-style: none; padding: 0; margin: 0;">
+                            <li style="margin-bottom: 1.2em;">
+                                <article>
+                                    <header>
+                                        <h4 style="font-size: 1.1em; line-height: 1.4; margin-bottom: 0.2em;">
+                                            <a href="#" style="color: var(--text-main); font-family: var(--font-serif); font-weight: 700;">Texas ERCOT & Dispatchable Generation: A Technical Review</a>
+                                        </h4>
+                                        <time class="published" datetime="2026-05-01" style="font-size: 0.75em; color: var(--tag-tech); font-weight: bold; text-transform: uppercase;">Infrastructure</time>
+                                    </header>
+                                </article>
+                            </li>
+                            <li style="margin-bottom: 1.2em;">
+                                <article>
+                                    <header>
+                                        <h4 style="font-size: 1.1em; line-height: 1.4; margin-bottom: 0.2em;">
+                                            <a href="#" style="color: var(--text-main); font-family: var(--font-serif); font-weight: 700;">Mayoral Transition: Economic Implications for Municipal Growth</a>
+                                        </h4>
+                                        <time class="published" datetime="2026-04-28" style="font-size: 0.75em; color: var(--tag-econ); font-weight: bold; text-transform: uppercase;">Local Policy</time>
+                                    </header>
+                                </article>
+                            </li>
+                            <li>
+                                <article>
+                                    <header>
+                                        <h4 style="font-size: 1.1em; line-height: 1.4; margin-bottom: 0.2em;">
+                                            <a href="#" style="color: var(--text-main); font-family: var(--font-serif); font-weight: 700;">Fiscal Projections for the 89th Texas Legislature</a>
+                                        </h4>
+                                        <time class="published" datetime="2026-04-15" style="font-size: 0.75em; color: var(--tag-policy); font-weight: bold; text-transform: uppercase;">Macroeconomics</time>
+                                    </header>
+                                </article>
+                            </li>
+                        </ul>
+                    </section>
+
+                    <section class="blurb" id="newsletter-zone" style="margin-bottom: 2em; background: rgba(128,128,128,0.03); padding: 1.5em; border-radius: 4px; border: 1px solid var(--border-color);">
+                        <h3 style="font-family: var(--font-serif); font-size: 1.4em; margin-bottom: 0.5em;">The Junto Dispatch</h3>
+                        <p style="font-size: 0.9em; line-height: 1.5; margin-bottom: 1.5em;">Receive our analysis of current events and political commentary directly to your inbox. Keep up to date with offers and upcoming projects.</p>
+                        
+                        <form
+                            action="https://buttondown.com/api/emails/embed-subscribe/TheJuntoPress"
+                            method="post"
+                            target="_blank"
+                            class="embeddable-buttondown-form"
+                            style="display: flex; flex-direction: column; gap: 0.8em; margin: 0;"
+                        >
+                            <input 
+                                type="email" 
+                                name="email" 
+                                placeholder="bfranklin@juntopress.com" 
+                                required 
+                                style="width: 100%; border: 1px solid var(--border-color); padding: 0.7em; border-radius: 4px; font-family: var(--font-sans); background: var(--bg-surface); text-align: center;" 
+                            />
+                            <input 
+                                type="submit" 
+                                value="Subscribe" 
+                                class="button fit primary" 
+                                style="font-weight: bold; width: 100%; letter-spacing: 1px;" 
+                            />
+                        </form>
+                    </section>
+
+                    <section id="footer">
+                        <ul class="icons" style="display: flex; gap: 1em; list-style: none; padding: 0; margin-bottom: 1em;">
+                            <li><a href="#" class="icon brands fa-twitter" style="color: var(--text-muted);"><span class="label">Twitter</span></a></li>
+                            <li><a href="/about/" class="icon solid fa-envelope" style="color: var(--text-muted);"><span class="label">Contact Editor</span></a></li>
+                            <li><a href="/about/" class="icon solid fa-lock" style="color: var(--text-muted);"><span class="label">Secure Tips</span></a></li>
+                        </ul>
+                        <p class="copyright" style="font-size: 0.8em; color: var(--text-muted);">&copy; 2026 The Junto Press. Independent & Serverless.</p>
+                    </section>
+
+                </section>
+
+            </div>
+
+        <script src="{{ '/assets/js/jquery.min.js' | url }}"></script>
+        <script src="{{ '/assets/js/browser.min.js' | url }}"></script>
+        <script src="{{ '/assets/js/breakpoints.min.js' | url }}"></script>
+        <script src="{{ '/assets/js/util.js' | url }}"></script>
+        <script src="{{ '/assets/js/main.js' | url }}"></script>
+
+        <script>
+            if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/sw.js');
+              });
+            }
+        </script>
+
+        <script>
+            const darkModeBtn = document.getElementById('darkModeBtn');
+            const iconMoon = document.getElementById('icon-moon');
+            const iconSun = document.getElementById('icon-sun');
+            const body = document.body;
+
+            function enableDarkMode() {
+                body.classList.add('dark-mode');
+                iconMoon.style.display = 'none';
+                iconSun.style.display = 'block';
+            }
+
+            function disableDarkMode() {
+                body.classList.remove('dark-mode');
+                iconMoon.style.display = 'block';
+                iconSun.style.display = 'none';
+            }
+
+            // Check saved preference
+            if (localStorage.getItem('theme') === 'dark') {
+                enableDarkMode();
+            }
+
+            // Toggle event
+            darkModeBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (body.classList.contains('dark-mode')) {
+                    localStorage.setItem('theme', 'light');
+                    disableDarkMode();
+                } else {
+                    localStorage.setItem('theme', 'dark');
+                    enableDarkMode();
+                }
+            });
+        </script>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                const header = document.getElementById('header');
+                
+                window.addEventListener('scroll', function() {
+                    // If the user scrolls down more than 50px, add the compact class
+                    if (window.scrollY > 50) {
+                        header.classList.add('compact');
+                    } else {
+                        // If they scroll back to the very top, restore full size
+                        header.classList.remove('compact');
+                    }
+                });
+            });
+        </script>
+
+        <div id="ios-install-prompt" style="position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 400px; background: var(--bg-surface); border: 1px solid var(--border-color); box-shadow: 0 10px 30px rgba(0,0,0,0.15); border-radius: 12px; padding: 1.5em; z-index: 99999; display: flex; flex-direction: column; align-items: center; text-align: center; transition: bottom 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); visibility: hidden;">
+        
+            <button id="close-ios-prompt" style="position: absolute; top: 10px; right: 15px; background: none; border: none; font-size: 1.5em; color: var(--text-muted); cursor: pointer; padding: 0;">&times;</button>
+            
+            <h3 style="font-family: var(--font-serif); font-size: 1.2em; margin: 0 0 0.5em 0; color: var(--text-main);">Install The Junto Press</h3>
+            <p style="font-family: var(--font-sans); font-size: 0.85em; color: var(--text-muted); margin: 0 0 1.5em 0; line-height: 1.4;">
+                Install this application on your home screen for offline access to the Advantage Play suite and rapid loading.
+            </p>
+            
+            <div style="background: rgba(128,128,128,0.05); border: 1px solid var(--border-color); border-radius: 8px; padding: 1em; width: 100%; display: flex; flex-direction: column; gap: 0.5em;">
+                <p style="margin: 0; font-size: 0.85em; color: var(--text-main); display: flex; align-items: center; justify-content: center; gap: 0.5em;">
+                    1. Tap the <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" y1="2" x2="12" y2="15"></line></svg> <b>Share</b> icon below.
+                </p>
+                <p style="margin: 0; font-size: 0.85em; color: var(--text-main); display: flex; align-items: center; justify-content: center; gap: 0.5em;">
+                    2. Select <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg> <b>Add to Home Screen</b>.
+                </p>
+            </div>
+        </div>
+
+        <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Detect iOS devices
+            const isIos = () => {
+                const userAgent = window.navigator.userAgent.toLowerCase();
+                return /iphone|ipad|ipod/.test(userAgent);
+            };
+
+            // Detect if running as standalone PWA
+            const isStandalone = () => {
+                return ('standalone' in window.navigator) && (window.navigator.standalone);
+            };
+
+            const prompt = document.getElementById('ios-install-prompt');
+            const closeBtn = document.getElementById('close-ios-prompt');
+
+            // Only show if it's iOS, NOT standalone, and hasn't been dismissed recently
+            if (isIos() && !isStandalone() && !localStorage.getItem('iosPromptDismissed')) {
+                // Wait 4 seconds after page load (to not fight with the splash screen)
+                setTimeout(() => {
+                    prompt.style.visibility = 'visible';
+                    prompt.style.bottom = '30px'; // Slide up
+                }, 4000);
+            }
+
+            closeBtn.addEventListener('click', () => {
+                prompt.style.bottom = '-300px'; // Slide down
+                setTimeout(() => { prompt.style.visibility = 'hidden'; }, 500);
+                // Don't bug them again for a while
+                localStorage.setItem('iosPromptDismissed', 'true'); 
+            });
+        });
+        </script>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                // 1. Only execute if the screen is mobile or tablet width
+                if (window.innerWidth <= 1280) {
+                    
+                    // 2. Check the browser memory to see if they are a first-time reader
+                    if (!localStorage.getItem('juntoMenuPeeked')) {
+                        const scrollMenu = document.querySelector('#header .links');
+                        
+                        if (scrollMenu) {
+                            // 3. Wait 1 second after the page loads so the user is actually looking
+                            setTimeout(() => {
+                                
+                                // 4. Smoothly pull the menu 120 pixels to the left
+                                scrollMenu.scrollTo({ left: 120, behavior: 'smooth' });
+                                
+                                // 5. Wait half a second, then smoothly snap it back to the beginning
+                                setTimeout(() => {
+                                    scrollMenu.scrollTo({ left: 0, behavior: 'smooth' });
+                                }, 600);
+
+                                // 6. Lock the animation so it never plays for this device again
+                                localStorage.setItem('juntoMenuPeeked', 'true');
+                                
+                            }, 1000);
+                        }
+                    }
+                }
+            });
+        </script>
+
+    </body>
+</html>

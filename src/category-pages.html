@@ -1,0 +1,48 @@
+---
+pagination:
+  data: collections
+  size: 1
+  alias: category
+  filter:
+    - all
+    - post
+    - posts
+    - tagList
+permalink: "/categories/{{ category | slugify }}/"
+layout: page.html
+---
+<div id="main">
+    <article class="post" style="padding: 2.5em; margin-bottom: 0;">
+        
+        <header style="border-bottom: 1px solid var(--border-color); padding: 1.5em 0 1.5em 0; margin-bottom: 2.5em; text-align: center; display: flex; flex-direction: column; align-items: center;">
+            <div class="title" style="border: none; padding: 0; margin: 0; width: 100%;">
+                <h2 style="font-size: 1.8em; margin-bottom: 0.2em; text-indent: 0.25em;">Topic: {{ category | capitalize }}</h2>
+                <p style="font-size: 0.9em; margin: 0;">Essays and analysis filed under {{ category }}.</p>
+            </div>
+        </header>
+        
+        <div class="row">
+            <div class="col-12">
+                {% assign taglist = collections[category] %}
+                {% for post in taglist reversed %}
+                    <section style="margin-bottom: 2.5em; padding-bottom: 2.5em; border-bottom: solid 1px var(--border-color);">
+                        <header style="border-bottom: none; margin-bottom: 0; padding-bottom: 0;">
+                            <div class="title" style="padding-left: 0; border-left: none;">
+                                <h3 style="font-size: 1.5em; margin-bottom: 0.3em;"><a href="{{ post.url }}">{{ post.data.title }}</a></h3>
+                                <div class="meta" style="padding: 0; display: flex; align-items: center; border: none; flex-wrap: wrap; gap: 1em; justify-content: flex-start;">
+                                    <time class="published" datetime="{{ post.date | readableDate }}" style="font-size: 0.85em; font-weight: bold; color: var(--text-muted);">{{ post.date | readableDate }}</time>
+                                    <a href="/authors/{{ post.data.author | slugify }}/" style="font-size: 0.85em; font-weight: bold; color: var(--accent-color); text-transform: uppercase; letter-spacing: 1px;">{{ post.data.author }}</a>
+                                </div>
+                            </div>
+                        </header>
+                        <p style="margin-top: 1.2em; line-height: 1.6; font-size: 1.05em;">{{ post.data.description }}</p>
+                        <ul class="actions" style="margin-top: 1.5em;">
+                            <li><a href="{{ post.url }}" class="button small">Read Essay</a></li>
+                        </ul>
+                    </section>
+                {% endfor %}
+            </div>
+        </div>
+
+    </article>
+</div>

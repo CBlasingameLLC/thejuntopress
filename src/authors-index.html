@@ -1,0 +1,36 @@
+---
+permalink: "authors/"
+layout: page.html
+---
+<div id="main">
+    <article class="post" style="padding: 2.5em; margin-bottom: 0;">
+        
+        <header style="border-bottom: 1px solid var(--border-color); padding: 1.5em 0 1.5em 0; margin-bottom: 2.5em; text-align: center; display: flex; flex-direction: column; align-items: center;">
+            <div class="title" style="border: none; padding: 0; margin: 0; width: 100%;">
+                <h2 style="font-size: 1.8em; margin-bottom: 0.2em; text-indent: 0.25em;">Our Authors</h2>
+                <p style="font-size: 0.9em; margin: 0;">The voices behind the analysis.</p>
+            </div>
+        </header>
+
+        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 2em 1.5em;">
+            {% for author in authors %}
+                <div style="flex: 0 1 18%; min-width: 140px; text-align: center; display: flex; flex-direction: column; align-items: center;">
+                    
+                    <a href="/authors/{{ author.slug }}/" class="image" style="width: 110px; height: 110px; border-radius: 50%; overflow: hidden; margin: 0 auto 1.2em auto; display: block; border: 2px solid var(--border-color); flex-shrink: 0;">
+                        <img src="{{ author.image }}" alt="{{ author.name }}" style="width: 100%; height: 100%; object-fit: cover;" />
+                    </a>
+                    
+                    <h3 style="font-size: 1.1em; margin-bottom: 0.3em; line-height: 1.2; min-height: 2.4em; display: flex; align-items: center; justify-content: center; width: 100%;">{{ author.name }}</h3>
+                    
+                    <p style="color: var(--accent-color); font-weight: bold; text-transform: uppercase; font-size: 0.7em; margin-bottom: 1.2em; letter-spacing: 1px;">{{ author.role }}</p>
+                    
+                    <ul class="actions" style="margin-top: auto; justify-content: center; padding: 0;">
+                        <li><a href="/authors/{{ author.slug }}/" class="button small" style="padding: 0 1.2em;">Profile</a></li>
+                    </ul>
+                    
+                </div>
+            {% endfor %}
+        </div>
+
+    </article>
+</div>

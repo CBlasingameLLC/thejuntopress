@@ -1,0 +1,86 @@
+---
+pagination:
+  data: authors
+  size: 1
+  alias: author
+permalink: "authors/{{ author.slug }}/"
+layout: page.html
+---
+            <div id="main">
+                <article class="post">
+                    <div class="row">
+                        
+                        <div class="col-4 col-12-medium">
+                            <span class="image fit"><img src="{{ author.image }}" alt="{{ author.name }}" style="border-radius: 5px;"/></span>
+                            <h2 style="margin-bottom: 0;">{{ author.name }}</h2>
+                            <p style="color: #2ebaae; font-weight: bold; letter-spacing: 1px; text-transform: uppercase; font-size: 0.8em;">{{ author.role }}</p>
+                            <p>{{ author.bio }}</p>
+                            
+                            <ul class="icons" style="margin-bottom: 1em;">
+                                <li><a href="{{ author.twitter }}" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+                                <li><a href="{{ author.email }}" class="icon solid fa-envelope"><span class="label">Email</span></a></li>
+                            </ul>
+
+                            {% if author.signal %}
+                                <p style="font-size: 0.8em; color: #888; margin-bottom: 2em;">
+                                    <i class="icon solid fa-lock" style="color: #2ebaae; margin-right: 5px;"></i> 
+                                    <strong>Secure Tip Line (Signal):</strong><br> {{ author.signal }}
+                                </p>
+                            {% endif %}
+
+                            {% if author.beats %}
+                                <h3 style="font-size: 1em; margin-bottom: 0.5em;">Coverage Areas</h3>
+                                <ul class="alt" style="font-size: 0.9em; margin-bottom: 2em;">
+                                    {% for beat in author.beats %}
+                                        <li style="padding: 0.5em 0;">{{ beat }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+
+                            <h3 style="font-size: 1em; margin-bottom: 0.5em;">Author Statistics</h3>
+                            {% assign stats = collections.posts | authorStats: author.name %}
+                            <ul class="alt" style="font-size: 0.9em; margin-bottom: 2em;">
+                                <li style="padding: 0.5em 0; display: flex; justify-content: space-between;">
+                                    <strong>Published Essays:</strong> <span>{{ stats.count }}</span>
+                                </li>
+                                <li style="padding: 0.5em 0; display: flex; justify-content: space-between;">
+                                    <strong>Total Words:</strong> <span>{{ stats.words }}</span>
+                                </li>
+                                <li style="padding: 0.5em 0; display: flex; justify-content: space-between;">
+                                    <strong>Total Read Time:</strong> <span>{{ stats.minutes }} Min</span>
+                                </li>
+                            </ul>
+
+                            {% if author.pinned %}
+                                <h3 style="font-size: 1em; margin-bottom: 0.5em;">Selected Work</h3>
+                                <a href="{{ author.pinned.url }}" class="button fit small" style="white-space: normal; line-height: 1.5; padding: 1em;">{{ author.pinned.title }}</a>
+                            {% endif %}
+                        </div>
+
+                        <div class="col-8 col-12-medium">
+                            <h3>Essays by {{ author.name }}</h3>
+                            <hr />
+                            {% for post in collections.posts reversed %}
+                                {% if post.data.author == author.name %}
+                                    <section style="margin-bottom: 2em;">
+                                        <header>
+                                            <div class="title" style="padding-left: 0; border-left: none;">
+                                                <h4><a href="{{ post.url }}">{{ post.data.title }}</a></h4>
+                                                <div class="meta" style="padding: 0; display: flex; align-items: center; border: none;">
+                                                    <time class="published" datetime="{{ post.date | readableDate }}" style="font-size: 0.8em; margin-right: 1em;">{{ post.date | readableDate }}</time>
+                                                    <span style="font-size: 0.8em; color: #aaa;">{{ post.templateContent | readingTime }} Min Read</span>
+                                                </div>
+                                            </div>
+                                        </header>
+                                        <p style="margin-top: 1em;">{{ post.data.description }}</p>
+                                        <ul class="actions">
+                                            <li><a href="{{ post.url }}" class="button small">Read</a></li>
+                                        </ul>
+                                    </section>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>

@@ -1,0 +1,26 @@
+[
+  {
+    "name": "Cayl Blasingame",
+    "slug": "cayl-blasingame",
+    "role": "Publisher & Editor-in-Chief",
+    "bio": "Cayl is the Publisher and Editor-in-Chief of The Junto Press, where he provides rigorous political and cultural commentary as well as in-depth analysis of current events. He is a Conservative, Right-Wing, Catholic who is currently pursuing a degree in Electrical Engineering. A Patriotic Nationalist who critiques ideas from both sides of the aisle, willing the good of America as a whole.",
+    "image": "/assets/images/cayl-picture.png",
+    "twitter": "https://twitter.com",
+    "email": "mailto:caylblasingame@outlook.com",
+    "signal": "+1 (555) 019-8372",
+    "beats": ["Political Ideology", "Foreign and Domestic Policy", "American Culture", "Catholic Morality"],
+    "pinned": {
+      "title": "The Economics of Digital Attention",
+      "url": "/test-article-2/"
+    }
+  },
+  {
+    "name": "Nick Ellis",
+    "slug": "nick-ellis",
+    "role": "Editor-at-Large",
+    "bio": "Nick is a critical cultural analyst, with an interest in historical accuracy and the social implications of contemporary issues. He is pursuing a degree in Accounting with a passion for politics and commitment to intellectual rigor.",
+    "image": "/assets/images/nick-picture.png",
+    "twitter": "https://twitter.com",
+    "email": "mailto:john@example.com"
+  }
+]

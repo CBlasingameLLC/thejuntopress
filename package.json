@@ -1,13 +1,14 @@
 {
-  "name": "website-for-elitemaxxing",
+  "name": "the-junto-press",
   "version": "1.0.0",
-  "description": "",
+  "description": "Rigorous analysis of politics, policy, and culture.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "eleventy",
+    "start": "eleventy --serve"
   },
   "keywords": [],
-  "author": "",
+  "author": "Cayl Blasingame",
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {

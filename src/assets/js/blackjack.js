@@ -5,12 +5,34 @@
 console.log("Blackjack Engine Initialized.");
 
 // --- 1. TABLE RULES ---
-const Rules = {
+let Rules = {
     decks: 6,
-    penetration: 0.75, // The Cut Card: Shuffle when 75% of the shoe is dealt
-    h17: true,         // Dealer must hit Soft 17
-    das: true,         // Double After Split allowed
-    blackjackPayout: 1.5 // 3:2 Payout
+    penetration: 0.75, 
+    h17: true,         
+    das: true,         
+    blackjackPayout: 1.5 
+};
+
+// --- 2.5 THE AUDIO ENGINE ---
+const AudioEngine = {
+    enabled: false,
+    sounds: {
+        card: '/assets/sounds/card.wav',
+        chip: '/assets/sounds/chip.wav',
+        shuffle: '/assets/sounds/shuffle.wav',
+        win: '/assets/sounds/win.wav',
+        loss: '/assets/sounds/loss.wav'
+    },
+    play(soundName) {
+        if (!this.enabled || !this.sounds[soundName]) return;
+        
+        // Creating a new Audio object on every play allows for polyphony (overlapping sounds)
+        const audio = new Audio(this.sounds[soundName]);
+        audio.volume = 0.4; // Keeps the sounds from blowing out the user's speakers
+        
+        // Browsers require user interaction before playing audio, so we catch errors
+        audio.play().catch(e => console.log("Audio blocked by browser policy."));
+    }
 };
 
 // --- 2. THE SHOE ENGINE ---
@@ -139,7 +161,7 @@ const Strategy = {
         9: ['P','P','P','P','P','S','P','P','S','S'],
         10:['S','S','S','S','S','S','S','S','S','S'],
         11:['P','P','P','P','P','P','P','P','P','P']  // Always split Aces
-    }
+    },
 
     // --- THE ILLUSTRIOUS 18 (Subset) ---
     // [TC_Threshold, 'DeviationPlay', 'BasicStrategyPlay']
@@ -158,8 +180,12 @@ const Strategy = {
 
 // --- 4. DOM ELEMENTS ---
 const UI = {
-    // Routing Elements
+    toggleSound: document.getElementById('toggle-sound'),
     mainMenu: document.getElementById('main-menu'),
+    toggleCasual: document.getElementById('toggle-casual'), // NEW
+    tableBetArea: document.getElementById('table-bet-area'), // NEW
+    chipStack: document.getElementById('chip-stack'), // NEW
+    btnFullscreen: document.getElementById('btn-fullscreen'), // Fix for fullscreen
     btnModePairs: document.getElementById('btn-mode-pairs'),
     btnModeSoft: document.getElementById('btn-mode-soft'),
     btnModeDeviations: document.getElementById('btn-mode-deviations'),
@@ -194,7 +220,15 @@ const UI = {
     settingsMenu: document.getElementById('settings-menu'),
     toggleBankroll: document.getElementById('toggle-bankroll'),
     toggleTotals: document.getElementById('toggle-totals'),
-    sessionStats: document.getElementById('session-stats')
+    sessionStats: document.getElementById('session-stats'),
+    configDecks: document.getElementById('config-decks'),
+    configPenetration: document.getElementById('config-penetration'),
+    penValueDisplay: document.getElementById('pen-value'),
+    insuranceArea: document.getElementById('insurance-bet-area'),
+    insuranceStack: document.getElementById('insurance-chip-stack'),
+    toggleBanner: document.getElementById('toggle-banner'),
+    configSpeed: document.getElementById('config-speed'),
+
 };
 
 // --- 5. THE GAME STATE CONTROLLER ---
@@ -225,11 +259,17 @@ class GameManager {
 
     bindEvents() {
 
+        // Audio Toggle
+        UI.toggleSound.addEventListener('change', (e) => {
+            AudioEngine.enabled = e.target.checked;
+        });
+
         // --- ROUTING ACTIONS ---
         const setGameMode = (mode) => {
             this.gameMode = mode;
             UI.mainMenu.style.display = 'none';
             UI.blackjackContainer.style.display = 'flex';
+            UI.uiTrueCount.parentElement.style.display = UI.toggleCasual.checked ? 'none' : 'block';
             
             // Reset Session Analytics
             this.decisionsTotal = 0;
@@ -254,19 +294,60 @@ class GameManager {
         UI.btnModeSoft.addEventListener('click', () => setGameMode('soft'));
         UI.btnModeDeviations.addEventListener('click', () => setGameMode('deviations')); // NEW
 
+        // Update Penetration Slider Display
+        UI.configPenetration.addEventListener('input', (e) => {
+            UI.penValueDisplay.innerText = `${e.target.value}%`;
+        });
+
         UI.btnReturnMenu.addEventListener('click', () => {
             UI.blackjackContainer.style.display = 'none';
             UI.mainMenu.style.display = 'flex';
         });
 
-        // Settings Menu
-        UI.btnSettings.addEventListener('click', () => {
-            UI.settingsMenu.style.display = UI.settingsMenu.style.display === 'none' ? 'block' : 'none';
+        // Apply Deck/Penetration Changes
+        const applyTableRules = () => {
+            const newDecks = parseInt(UI.configDecks.value);
+            const newPen = parseInt(UI.configPenetration.value) / 100;
+            
+            Rules.decks = newDecks;
+            Rules.penetration = newPen;
+            
+            // Rebuild the entire shoe with the new mathematical constraints
+            this.shoe = new Shoe(Rules.decks);
+            this.runningCount = 0;
+            this.updateCountUI();
+            
+            this.showFeedback(`Rules Updated: ${newDecks} Decks, ${UI.configPenetration.value}% Pen`, 2500);
+        };
+
+        UI.configDecks.addEventListener('change', applyTableRules);
+        UI.configPenetration.addEventListener('change', applyTableRules);
+
+        // Robust Cross-Browser Fullscreen
+        UI.btnFullscreen.addEventListener('click', () => {
+            const doc = window.document;
+            const docEl = doc.documentElement;
+            const requestFullScreen = docEl.requestFullscreen || docEl.webkitRequestFullScreen;
+            const cancelFullScreen = doc.exitFullscreen || doc.webkitExitFullscreen;
+
+            if (!doc.fullscreenElement && !doc.webkitFullscreenElement) {
+                requestFullScreen.call(docEl).catch(err => console.log("Fullscreen denied by browser."));
+                UI.btnFullscreen.innerHTML = '<i class="icon solid fa-compress"></i>';
+            } else {
+                cancelFullScreen.call(doc);
+                UI.btnFullscreen.innerHTML = '<i class="icon solid fa-expand"></i>';
+            }
         });
 
-        // Hide menu if clicking anywhere else
+        // Settings Menu Bug Fix
+        UI.btnSettings.addEventListener('click', (e) => {
+            e.stopPropagation(); // Stops the click from triggering the document closer
+            const isHidden = window.getComputedStyle(UI.settingsMenu).display === 'none';
+            UI.settingsMenu.style.display = isHidden ? 'block' : 'none';
+        });
+
         document.addEventListener('click', (e) => {
-            if (!UI.settingsMenu.contains(e.target) && e.target !== UI.btnSettings && !UI.btnSettings.contains(e.target)) {
+            if (!UI.settingsMenu.contains(e.target) && e.target !== UI.btnSettings) {
                 UI.settingsMenu.style.display = 'none';
             }
         });
@@ -293,15 +374,49 @@ class GameManager {
         UI.btnBuyInsurance.addEventListener('click', () => this.handleInsurance(true));
         UI.btnPassInsurance.addEventListener('click', () => this.handleInsurance(false));
 
+        // Betting Logic (Chip Throwing)
         UI.chipBtns.forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const amount = parseInt(e.target.innerText.replace('$', ''));
-                if (this.bankroll >= amount) {
-                    this.bankroll -= amount;
+                
+                // If Freeplay is on, or we have enough bankroll, allow the bet
+                if (UI.toggleBankroll.checked || this.bankroll >= amount) {
+                    if (!UI.toggleBankroll.checked) {
+                        this.bankroll -= amount;
+                    }
                     this.currentBet += amount;
+                    
+                    const chipClass = e.target.classList[1]; 
+                    const miniChip = document.createElement('div');
+                    miniChip.className = `chip ${chipClass} thrown-chip`;
+                    miniChip.innerText = e.target.innerText;
+                    
+                    const xOffset = Math.floor(Math.random() * 30) - 15;
+                    const yOffset = Math.floor(Math.random() * 30) - 15;
+                    const rot = Math.floor(Math.random() * 360);
+                    
+                    miniChip.style.setProperty('--x', `${xOffset}px`);
+                    miniChip.style.setProperty('--y', `${yOffset}px`);
+                    miniChip.style.setProperty('--rot', `${rot}deg`);
+                    
+                    UI.chipStack.appendChild(miniChip);
+                    AudioEngine.play('chip');
                     this.updateFinanceUI();
+                } else {
+                    this.showFeedback("Not enough Bankroll!", 1500);
                 }
             });
+        });
+
+        // Secret "Clear Bet" feature (Tap the stack to pull chips back)
+        UI.tableBetArea.addEventListener('click', () => {
+            if (this.currentBet > 0 && UI.betControls.style.display !== 'none') {
+                this.bankroll += this.currentBet;
+                this.currentBet = 0;
+                UI.chipStack.innerHTML = ''; // Clear the physical chips
+                this.updateFinanceUI();
+                UI.insuranceArea.style.display = 'none';
+            }
         });
 
         UI.uiBet.parentElement.addEventListener('click', () => {
@@ -316,18 +431,18 @@ class GameManager {
 
     updateFinanceUI() {
         if (UI.toggleBankroll.checked) {
-            UI.uiBankroll.innerText = 'HIDDEN';
-            UI.uiBet.innerText = 'HIDDEN';
+            UI.uiBankroll.innerText = 'FREEPLAY';
+            UI.uiBet.innerText = 'FREEPLAY';
         } else {
             UI.uiBankroll.innerText = '$' + this.bankroll.toLocaleString();
             UI.uiBet.innerText = '$' + this.currentBet.toLocaleString();
         }
         
-        if (this.currentBet > 0 && !UI.toggleBankroll.checked) {
+        if (this.currentBet > 0) {
             UI.tableBetBubble.innerText = '$' + this.currentBet.toLocaleString();
-            UI.tableBetBubble.style.display = 'block';
+            UI.tableBetArea.style.display = 'flex';
         } else {
-            UI.tableBetBubble.style.display = 'none';
+            UI.tableBetArea.style.display = 'none';
         }
 
         localStorage.setItem('junto_blackjack_bankroll', this.bankroll.toString());
@@ -443,6 +558,12 @@ class GameManager {
         this.playerHands[0].add(p2);
         this.dealerHand.add(dUp);
 
+        // Simulate dealing 4 cards rapidly
+        setTimeout(() => AudioEngine.play('card'), 0);
+        setTimeout(() => AudioEngine.play('card'), 150);
+        setTimeout(() => AudioEngine.play('card'), 300);
+        setTimeout(() => AudioEngine.play('card'), 450);
+
         this.renderTable();
         UI.betControls.style.display = 'none';
 
@@ -457,6 +578,9 @@ class GameManager {
                 this.endRound("Blackjack!", "blackjack");
             }
         }
+
+        UI.insuranceStack.innerHTML = '';
+        UI.insuranceArea.style.display = 'none';
     }
 
     handleInsurance(bought) {
@@ -477,6 +601,20 @@ class GameManager {
             if (this.bankroll >= insCost) {
                 this.bankroll -= insCost;
                 this.insuranceBet = insCost;
+                
+                // Physically throw the chip to the Insurance Line
+                const insChip = document.createElement('div');
+                insChip.className = `chip purple thrown-chip`;
+                insChip.innerText = '$' + insCost;
+                insChip.style.setProperty('--x', `0px`);
+                insChip.style.setProperty('--y', `0px`);
+                insChip.style.setProperty('--rot', `${Math.floor(Math.random() * 360)}deg`);
+                
+                UI.insuranceStack.innerHTML = '';
+                UI.insuranceStack.appendChild(insChip);
+                AudioEngine.play('chip');
+                UI.insuranceArea.style.display = 'block';
+                
                 this.updateFinanceUI();
             } else {
                 this.showFeedback("Not enough bankroll for Insurance", 2000);
@@ -584,6 +722,7 @@ class GameManager {
     playerHit() {
         const hand = this.playerHands[this.activeHandIndex];
         hand.add(this.shoe.draw());
+        AudioEngine.play('card');
         
         if (hand.score.isBust) {
             hand.resolved = true;
@@ -607,6 +746,7 @@ class GameManager {
             this.updateFinanceUI();
 
             hand.add(this.shoe.draw());
+            AudioEngine.play('card');
             hand.resolved = true;
             this.advanceHand();
         }
@@ -624,6 +764,7 @@ class GameManager {
             
             // Deal one new card to the original hand
             hand.add(this.shoe.draw());
+            AudioEngine.play('card');
             
             // Insert the new hand into the array and deal it one card
             newHand.add(this.shoe.draw());
@@ -668,13 +809,15 @@ class GameManager {
     dealerTurn() {
         let dScore = this.dealerHand.score;
         let mustHit = dScore.total < 17 || (dScore.total === 17 && dScore.isSoft && Rules.h17);
+        const speed = parseInt(UI.configSpeed.value);
 
         if (mustHit) {
             setTimeout(() => {
                 this.dealerHand.add(this.shoe.draw());
+                AudioEngine.play('card');
                 this.renderTable();
                 this.dealerTurn();
-            }, 800);
+            }, speed);
         } else {
             this.resolveWinner();
         }
@@ -755,35 +898,71 @@ class GameManager {
         this.flipHoleCard();
         this.renderTable();
 
-        UI.gameMessage.innerText = message;
-        UI.gameMessage.style.display = 'block';
+        const speed = parseInt(UI.configSpeed.value);
+        const skipBanner = UI.toggleBanner.checked;
+
+        // Display Banner (unless skipped)
+        if (!skipBanner) {
+            UI.gameMessage.innerText = message;
+            UI.gameMessage.style.display = 'block';
+        } else {
+            // Drop a small, non-intrusive toast instead
+            this.showFeedback(message, 1500); 
+        }
+        
         UI.gameControls.style.display = 'none';
         
+        // Calculate reset delay based on speed setting
+        let resetDelay = skipBanner ? speed + 800 : 2500; 
+        if (speed === 0) resetDelay = skipBanner ? 500 : 1500; // Buffer for instant mode
+
         setTimeout(() => {
-            if (payoutAmount === "blackjack") {
+            // FIXED: Corrected the audio trigger to compare against this.currentBet
+            if (payoutAmount === "blackjack" || (typeof payoutAmount === 'number' && payoutAmount > this.currentBet)) {
+                AudioEngine.play('win');
+            } else if (payoutAmount === 0 && !message.includes("Push")) {
+                AudioEngine.play('loss');
+            }
+            
+            // RESTORED: The actual payout math that adds winnings to your bankroll!
+            if (payoutAmount === "blackjack" && !UI.toggleBankroll.checked) {
                 this.bankroll += this.currentBet + (this.currentBet * Rules.blackjackPayout);
-            } else if (typeof payoutAmount === 'number') {
+            } else if (typeof payoutAmount === 'number' && !UI.toggleBankroll.checked) {
                 this.bankroll += payoutAmount;
             }
             
             this.currentBet = 0;
             this.updateFinanceUI();
             UI.betControls.style.display = 'flex';
+            UI.gameMessage.style.display = 'none';
+            UI.insuranceStack.innerHTML = '';
+            UI.insuranceArea.style.display = 'none';
+            UI.chipStack.innerHTML = '';
             
             if (this.shoe.needsShuffle) {
                 this.shoe.buildAndShuffle();
                 this.runningCount = 0;
                 this.updateCountUI();
+
+                AudioEngine.play('shuffle'); 
                 
-                UI.gameMessage.innerText = "SHUFFLING SHOE...";
-                UI.gameMessage.style.display = 'block';
-                setTimeout(() => { UI.gameMessage.style.display = 'none'; }, 1500);
+                if (!skipBanner) {
+                    UI.gameMessage.innerText = "SHUFFLING SHOE...";
+                    UI.gameMessage.style.display = 'block';
+                    setTimeout(() => { UI.gameMessage.style.display = 'none'; }, 1500);
+                } else {
+                    this.showFeedback("Shuffling Shoe...", 1500);
+                }
             }
-        }, 2500); 
+        }, resetDelay); 
     }
 
     // --- BASIC STRATEGY EVALUATOR ---
     evaluatePlay(playerAction) {
+
+        // NEW: Abort grader if Casual Mode is enabled
+        if (UI.toggleCasual.checked) return;
+
         const activeHand = this.playerHands[this.activeHandIndex];
         if (activeHand.score.isBust || UI.gameControls.style.display === 'none') return;
 

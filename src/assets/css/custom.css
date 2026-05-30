@@ -1266,13 +1266,16 @@ html {
     opacity: 0.8;
 }
 
-/* The Dealer's Hole Card (Face Down) */
+/* --- 1. REFINED HOLE CARD --- */
 .card-hidden { 
-    background: #002147; /* Junto Navy */
-    background-image: repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(255,255,255,0.1) 5px, rgba(255,255,255,0.1) 10px); 
+    /* A striking casino-red geometric pattern */
+    background: #800000;
+    background-image: radial-gradient(#b31b1b 15%, transparent 16%), radial-gradient(#b31b1b 15%, transparent 16%);
+    background-size: 20px 20px;
+    background-position: 0 0, 10px 10px;
     border: 3px solid #ffffff; 
 }
-.card-hidden * { display: none; } /* Hides the text inside the hole card */
+.card-hidden * { display: none; }
 
 /* =========================================
    BLACKJACK PRO: AP FEEDBACK TOAST
@@ -1463,6 +1466,41 @@ html {
     padding: 2em 1.5em;
     box-sizing: border-box;
     box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+    background: #111111; /* Deeper black for better contrast */
+    border: 2px solid var(--accent-color);
+    color: #ffffff !important; /* Force pure white text */
+}
+
+#reference-modal h2, #reference-modal h3 {
+    color: var(--accent-color) !important;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+#reference-modal p, #reference-modal ul, #reference-modal li {
+    color: #e0e0e0 !important; /* Soft white instead of muddy grey */
+    font-size: 0.95em;
+}
+
+/* Settings Menu Updates */
+#settings-menu {
+    /* ...keep existing position/size rules... */
+    background: #111111;
+    color: #ffffff;
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+#settings-menu label {
+    color: #ffffff;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+/* Enhancing the Top Bar Text */
+#btn-return-menu, #btn-settings, #btn-fullscreen {
+    color: #ffffff !important; 
+    text-shadow: 0 2px 4px rgba(0,0,0,0.8); /* Ensures visibility over the green felt */
+    font-weight: bold;
 }
 
 .close-modal {
@@ -1473,4 +1511,224 @@ html {
     cursor: pointer;
     border: none;
     background: transparent;
+}
+
+/* --- 2. STRATEGY TABLES --- */
+.strategy-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1em;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85em;
+    background: #111111;
+    color: #ffffff;
+}
+.strategy-table th, .strategy-table td {
+    border: 1px solid rgba(255,255,255,0.2);
+    padding: 0.5em;
+    text-align: center;
+}
+.strategy-table th { background: #222222; color: var(--accent-color); font-weight: bold; }
+.strategy-table td.hit { background: #27ae60; color: white; }
+.strategy-table td.stand { background: #e74c3c; color: white; }
+.strategy-table td.double { background: #f39c12; color: white; }
+.strategy-table td.split { background: #3498db; color: white; }
+
+/* --- 3. CHIP THROWING ANIMATION --- */
+#table-bet-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    width: 100px;
+    height: 100px;
+    cursor: pointer;
+    margin-bottom: 20px; /* Pushes it comfortably above the cards */
+    position: relative;
+}
+.table-bet-bubble {
+    /* Forcing the classic gold and black high-contrast look */
+    background: rgba(0,0,0,0.9) !important;
+    border: 2px solid #f1c40f !important;
+    color: #f1c40f !important;
+    padding: 0.2em 0.8em;
+    border-radius: 15px;
+    font-weight: bold;
+    font-size: 0.9em;
+    position: absolute;
+    right: -70px; /* Moves it safely to the right of the chips */
+    top: 20px;    /* Aligns it nicely */
+    z-index: 10;
+}
+#chip-stack {
+    display: flex;
+    flex-direction: column-reverse; /* Stacks chips upward */
+    align-items: center;
+    margin-bottom: 10px;
+}
+.thrown-chip {
+    width: 40px; height: 40px; 
+    font-size: 0.7em;
+    position: absolute; /* Allows them to stack on top of each other */
+    top: 0; left: 0;
+    box-shadow: 2px 4px 6px rgba(0,0,0,0.6);
+    animation: throwChip 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes throwChip {
+    0% { transform: translate(0, 150px) scale(1.5); opacity: 0; }
+    /* Uses dynamic variables set by JS for random scattering */
+    100% { transform: translate(var(--x, 0), var(--y, 0)) rotate(var(--rot, 0deg)) scale(1); opacity: 1; }
+}
+
+/* Make checkboxes and dropdowns in settings easily visible */
+#settings-menu input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--accent-color); cursor: pointer; }
+#settings-menu select { background: #222; color: white; border: 1px solid var(--accent-color); padding: 4px; border-radius: 4px; outline: none; }
+
+/* --- 1. DEALER CARD OVERLAP --- */
+/* Forces the dealer's hand to fan out just like the player's */
+#dealer-cards {
+    display: flex;
+    flex-direction: row;
+    height: 120px;
+    padding-left: 10px;
+}
+#dealer-cards .playing-card:not(:first-child) {
+    margin-left: -55px; 
+    box-shadow: -4px 4px 10px rgba(0,0,0,0.3);
+}
+
+/* --- 2. THE CLASSIC FELT TEXT --- */
+.felt-text {
+    position: absolute;
+    top: 42%; /* Sits dead center vertically */
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: rgba(255, 255, 255, 0.15); /* Faint, embedded look */
+    font-family: 'Times New Roman', serif;
+    text-transform: uppercase;
+    pointer-events: none;
+    user-select: none;
+    width: 100%;
+}
+.felt-text h2 { margin: 0; font-size: 2.2em; letter-spacing: 3px; font-weight: normal; }
+.felt-text p { margin: 5px 0 0 0; font-size: 0.8em; letter-spacing: 1px; font-weight: bold; }
+
+/* --- OVERRIDE: FORCE CHECKBOXES TO DISPLAY --- */
+#settings-menu input[type="checkbox"] { 
+    -webkit-appearance: auto !important; 
+    appearance: auto !important; 
+    display: inline-block !important;
+    width: 16px !important; 
+    height: 16px !important; 
+    accent-color: var(--accent-color) !important; 
+    cursor: pointer !important; 
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* --- OVERRIDE: HIGH CONTRAST STRATEGY TABLES --- */
+#reference-modal .strategy-table th,
+#reference-modal .strategy-table td {
+    color: #ffffff !important; /* Forces text to pure white */
+    font-family: 'Inter', sans-serif !important;
+    font-weight: bold !important;
+    border: 1px solid rgba(255,255,255,0.3) !important;
+}
+
+/* Ensure the background colors of the table cells overpower any theme dark-mode settings */
+#reference-modal .strategy-table td.hit { background-color: #27ae60 !important; color: #ffffff !important; }
+#reference-modal .strategy-table td.stand { background-color: #e74c3c !important; color: #ffffff !important; }
+#reference-modal .strategy-table td.double { background-color: #f39c12 !important; color: #ffffff !important; }
+#reference-modal .strategy-table td.split { background-color: #3498db !important; color: #ffffff !important; }
+
+/* Force standard text in the modal to remain white */
+#reference-modal p, #reference-modal ul, #reference-modal li, #reference-modal em, #reference-modal strong {
+    color: #ffffff !important;
+}
+
+/* =========================================
+   UI OVERHAUL: BUTTONS, MENUS, & FELT
+   ========================================= */
+
+/* 1. Main Menu Buttons Overhaul */
+.menu-btn {
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%) !important; /* Rich Casino Blue Gradient */
+    border: 2px solid rgba(255,255,255,0.1) !important;
+    color: #ffffff !important;
+    font-family: 'Inter', sans-serif !important;
+    font-size: 1.1em !important;
+    font-weight: 800 !important;
+    padding: 1.2em 2em !important;
+    margin: 0.5em 0 !important;
+    width: 85% !important;
+    max-width: 320px !important;
+    border-radius: 30px !important; /* Premium Pill Shape */
+    text-transform: uppercase !important;
+    letter-spacing: 2px !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.2) !important;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5) !important;
+}
+
+.menu-btn:hover, .menu-btn:active {
+    background: linear-gradient(135deg, #2a5298 0%, #1e3c72 100%) !important;
+    transform: translateY(-3px) scale(1.02) !important;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.2) !important;
+}
+
+/* Make the Strategy Library button distinctly Ruby Red */
+#btn-open-reference {
+    background: linear-gradient(135deg, #4b134f 0%, #c94b4b 100%) !important; 
+    margin-top: 2em !important;
+}
+
+/* 2. Fixed Bet Amount Bubble */
+.table-bet-bubble {
+    background: rgba(0,0,0,0.85) !important;
+    border: 2px solid #f1c40f !important;
+    color: #f1c40f !important;
+    padding: 0.3em 0.8em !important;
+    border-radius: 20px !important;
+    font-weight: 900 !important;
+    font-family: monospace !important;
+    font-size: 0.9em !important;
+    position: absolute !important;
+    top: 50% !important; /* Centers it vertically relative to the chips */
+    left: 110% !important; /* Pushes it safely outside the right edge of the betting circle */
+    transform: translateY(-50%) !important;
+    z-index: 10 !important;
+    white-space: nowrap !important; /* CRITICAL: Stops it from wrapping and oversizing */
+    width: max-content !important; /* CRITICAL: Locks the width to the text length */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5) !important;
+}
+
+/* 3. Checkbox Overlap Fixes */
+#settings-menu {
+    min-width: 280px !important; /* Widens the menu so the text fits comfortably */
+}
+#settings-menu label {
+    display: flex !important;
+    align-items: center !important;
+    white-space: nowrap !important; /* Prevents text from dropping below the box */
+    color: #ffffff !important;
+}
+#settings-menu input[type="checkbox"] { 
+    -webkit-appearance: auto !important; 
+    appearance: auto !important; 
+    display: inline-block !important;
+    width: 18px !important; 
+    height: 18px !important; 
+    flex-shrink: 0 !important; /* CRITICAL: Stops the box from getting squished by the text */
+    margin: 0 12px 0 0 !important; /* Forces a wide physical gap between the box and the text */
+    accent-color: var(--accent-color) !important; 
+    cursor: pointer !important; 
+}
+
+/* 4. Table Felt Text Overhaul */
+.felt-text {
+    color: rgba(241, 196, 15, 0.35) !important; /* Classic Casino Gold watermark */
+    text-shadow: 0 2px 4px rgba(0,0,0,0.6) !important; /* Adds depth into the green felt */
 }

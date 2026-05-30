@@ -21,52 +21,128 @@ permalink: "/games/blackjack/"
 </div>
 
 <div id="reference-modal">
-    <button id="btn-close-reference" class="close-modal">&times;</button>
-    <h2 style="color: var(--accent-color); border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 0.5em;">Strategy Library</h2>
+    <button id="btn-close-reference" class="close-modal" style="color: #ffffff;">&times;</button>
+    <h2 style="color: #f1c40f; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 0.5em; margin-top: 0;">Strategy Library</h2>
     
-    <h3 style="margin-top: 1.5em;">The Rules of the Table</h3>
-    <ul style="color: rgba(255,255,255,0.8); font-size: 0.9em; line-height: 1.6;">
+    <h3 style="margin-top: 1.5em; color: #ffffff;">The Rules of the Table</h3>
+    <ul style="color: #e0e0e0; font-size: 0.9em; line-height: 1.6;">
         <li><strong>Decks:</strong> 6</li>
         <li><strong>Dealer:</strong> Hits on Soft 17 (H17)</li>
         <li><strong>Double After Split:</strong> Allowed (DAS)</li>
-        <li><strong>Surrender:</strong> None</li>
         <li><strong>Blackjack Pays:</strong> 3:2</li>
     </ul>
 
     <h3 style="margin-top: 1.5em; color: #2ecc71;">Hi-Lo Counting System</h3>
-    <p style="color: rgba(255,255,255,0.8); font-size: 0.9em; line-height: 1.6;">
+    <p style="color: #e0e0e0; font-size: 0.9em; line-height: 1.6;">
         <strong>+1:</strong> 2, 3, 4, 5, 6<br>
         <strong> 0:</strong> 7, 8, 9<br>
         <strong>-1:</strong> 10, J, Q, K, A<br><br>
         <em>True Count = Running Count ÷ Decks Remaining</em>
     </p>
 
-    <h3 style="margin-top: 1.5em; color: #f1c40f;">Illustrious 18 (Coming Soon)</h3>
-    <p style="color: rgba(255,255,255,0.8); font-size: 0.9em;">Mathematical deviations based on the True Count.</p>
+    <h3 style="margin-top: 2em; color: #f1c40f;">1. Hard Totals</h3>
+    <div style="overflow-x: auto; margin-bottom: 2em;">
+        <table class="strategy-table" style="min-width: 500px;">
+            <tr><th>Player</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th><th>A</th></tr>
+            <tr><td>17+</td><td class="stand">S</td><td class="stand">S</td><td class="stand">S</td><td class="stand">S</td><td class="stand">S</td><td class="stand">S</td><td class="stand">S</td><td class="stand">S</td><td class="stand">S</td><td class="stand">S</td></tr>
+            <tr><td>13-16</td><td class="stand">S</td><td class="stand">S</td><td class="stand">S</td><td class="stand">S</td><td class="stand">S</td><td class="hit">H</td><td class="hit">H</td><td class="hit">H</td><td class="hit">H</td><td class="hit">H</td></tr>
+            <tr><td>12</td><td class="hit">H</td><td class="hit">H</td><td class="stand">S</td><td class="stand">S</td><td class="stand">S</td><td class="hit">H</td><td class="hit">H</td><td class="hit">H</td><td class="hit">H</td><td class="hit">H</td></tr>
+            <tr><td>11</td><td class="double">D</td><td class="double">D</td><td class="double">D</td><td class="double">D</td><td class="double">D</td><td class="double">D</td><td class="double">D</td><td class="double">D</td><td class="double">D</td><td class="double">D</td></tr>
+            <tr><td>10</td><td class="double">D</td><td class="double">D</td><td class="double">D</td><td class="double">D</td><td class="double">D</td><td class="double">D</td><td class="double">D</td><td class="double">D</td><td class="hit">H</td><td class="hit">H</td></tr>
+            <tr><td>9</td><td class="hit">H</td><td class="double">D</td><td class="double">D</td><td class="double">D</td><td class="double">D</td><td class="hit">H</td><td class="hit">H</td><td class="hit">H</td><td class="hit">H</td><td class="hit">H</td></tr>
+            <tr><td>5-8</td><td class="hit">H</td><td class="hit">H</td><td class="hit">H</td><td class="hit">H</td><td class="hit">H</td><td class="hit">H</td><td class="hit">H</td><td class="hit">H</td><td class="hit">H</td><td class="hit">H</td></tr>
+        </table>
+    </div>
+
+    <h3 style="margin-top: 2em; color: #f1c40f;">2. Soft Totals</h3>
+    <div style="overflow-x: auto; margin-bottom: 2em;">
+        <table class="strategy-table" style="min-width: 500px;">
+            <tr><th>Player</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th><th>A</th></tr>
+            <tr><td>A,8 - A,9</td><td class="stand">S</td><td class="stand">S</td><td class="stand">S</td><td class="stand">S</td><td class="stand">S</td><td class="stand">S</td><td class="stand">S</td><td class="stand">S</td><td class="stand">S</td><td class="stand">S</td></tr>
+            <tr><td>A,7</td><td class="stand">S</td><td class="double">D</td><td class="double">D</td><td class="double">D</td><td class="double">D</td><td class="stand">S</td><td class="stand">S</td><td class="hit">H</td><td class="hit">H</td><td class="hit">H</td></tr>
+            <tr><td>A,6</td><td class="hit">H</td><td class="double">D</td><td class="double">D</td><td class="double">D</td><td class="double">D</td><td class="hit">H</td><td class="hit">H</td><td class="hit">H</td><td class="hit">H</td><td class="hit">H</td></tr>
+            <tr><td>A,4 - A,5</td><td class="hit">H</td><td class="hit">H</td><td class="double">D</td><td class="double">D</td><td class="double">D</td><td class="hit">H</td><td class="hit">H</td><td class="hit">H</td><td class="hit">H</td><td class="hit">H</td></tr>
+            <tr><td>A,2 - A,3</td><td class="hit">H</td><td class="hit">H</td><td class="hit">H</td><td class="double">D</td><td class="double">D</td><td class="hit">H</td><td class="hit">H</td><td class="hit">H</td><td class="hit">H</td><td class="hit">H</td></tr>
+        </table>
+    </div>
+
+    <h3 style="margin-top: 2em; color: #f1c40f;">3. Pairs</h3>
+    <div style="overflow-x: auto; margin-bottom: 2em;">
+        <table class="strategy-table" style="min-width: 500px;">
+            <tr><th>Player</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th><th>A</th></tr>
+            <tr><td>A,A / 8,8</td><td class="split">P</td><td class="split">P</td><td class="split">P</td><td class="split">P</td><td class="split">P</td><td class="split">P</td><td class="split">P</td><td class="split">P</td><td class="split">P</td><td class="split">P</td></tr>
+            <tr><td>10,10</td><td class="stand">S</td><td class="stand">S</td><td class="stand">S</td><td class="stand">S</td><td class="stand">S</td><td class="stand">S</td><td class="stand">S</td><td class="stand">S</td><td class="stand">S</td><td class="stand">S</td></tr>
+            <tr><td>9,9</td><td class="split">P</td><td class="split">P</td><td class="split">P</td><td class="split">P</td><td class="split">P</td><td class="stand">S</td><td class="split">P</td><td class="split">P</td><td class="stand">S</td><td class="stand">S</td></tr>
+            <tr><td>7,7</td><td class="split">P</td><td class="split">P</td><td class="split">P</td><td class="split">P</td><td class="split">P</td><td class="split">P</td><td class="hit">H</td><td class="hit">H</td><td class="hit">H</td><td class="hit">H</td></tr>
+            <tr><td>6,6</td><td class="split">P</td><td class="split">P</td><td class="split">P</td><td class="split">P</td><td class="split">P</td><td class="hit">H</td><td class="hit">H</td><td class="hit">H</td><td class="hit">H</td><td class="hit">H</td></tr>
+            <tr><td>5,5</td><td class="double">D</td><td class="double">D</td><td class="double">D</td><td class="double">D</td><td class="double">D</td><td class="double">D</td><td class="double">D</td><td class="double">D</td><td class="hit">H</td><td class="hit">H</td></tr>
+            <tr><td>4,4</td><td class="hit">H</td><td class="hit">H</td><td class="hit">H</td><td class="split">P</td><td class="split">P</td><td class="hit">H</td><td class="hit">H</td><td class="hit">H</td><td class="hit">H</td><td class="hit">H</td></tr>
+            <tr><td>2,2 - 3,3</td><td class="split">P</td><td class="split">P</td><td class="split">P</td><td class="split">P</td><td class="split">P</td><td class="split">P</td><td class="hit">H</td><td class="hit">H</td><td class="hit">H</td><td class="hit">H</td></tr>
+        </table>
+    </div>
 </div>
 
 <div id="blackjack-container" style="display: none; flex-direction: column; height: 100dvh; width: 100vw; position: relative; overflow: hidden; box-sizing: border-box;">
 
-    <div style="position: absolute; top: 0; left: 0; width: 100%; padding: 1em; display: flex; justify-content: space-between; align-items: flex-start; z-index: 10; pointer-events: none;">
+    <div style="position: absolute; top: 0; left: 0; width: 100%; padding: 1em; display: flex; justify-content: space-between; align-items: flex-start; z-index: 50; pointer-events: none;">
         
         <div style="pointer-events: auto; display: flex; flex-direction: column; gap: 0.5em;">
-            <button id="btn-return-menu" style="background: transparent; color: rgba(255,255,255,0.6); border: none; font-size: 1.2em; padding: 0; box-shadow: none;"><i class="icon solid fa-chevron-left"></i> Menu</button>
+            <button id="btn-return-menu" style="background: transparent; color: #ffffff; text-shadow: 0 2px 4px rgba(0,0,0,0.8); border: none; font-size: 1.2em; padding: 0; box-shadow: none; font-weight: bold; cursor: pointer;"><i class="icon solid fa-chevron-left"></i> Menu</button>
             <div id="session-stats" style="display: none; background: rgba(0,0,0,0.6); padding: 0.3em 0.8em; border-radius: 20px; font-family: monospace; font-size: 0.85em; color: var(--accent-color); border: 1px solid rgba(255,255,255,0.1);">Accuracy: --</div>
         </div>
         
         <div style="pointer-events: auto; display: flex; gap: 1.2em;">
-            <button id="btn-settings" style="background: transparent; border: none; color: rgba(255,255,255,0.6); font-size: 1.2em; padding: 0; box-shadow: none;"><i class="icon solid fa-cog"></i></button>
-            <button id="btn-fullscreen" style="background: transparent; border: none; color: rgba(255,255,255,0.6); font-size: 1.2em; padding: 0; box-shadow: none;"><i class="icon solid fa-expand"></i></button>
+            <button id="btn-settings" style="background: transparent; border: none; color: #ffffff; text-shadow: 0 2px 4px rgba(0,0,0,0.8); font-size: 1.2em; padding: 0; box-shadow: none; cursor: pointer;"><i class="icon solid fa-cog"></i></button>
+            <button id="btn-fullscreen" style="background: transparent; border: none; color: #ffffff; text-shadow: 0 2px 4px rgba(0,0,0,0.8); font-size: 1.2em; padding: 0; box-shadow: none; cursor: pointer;"><i class="icon solid fa-expand"></i></button>
         </div>
     </div>
 
     <div id="settings-menu" style="display: none; position: absolute; top: 50px; right: 3em; background: #1a1a1a; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 1.2em; z-index: 250; box-shadow: 0 10px 25px rgba(0,0,0,0.5); font-size: 0.9em;">
+        
+        <div style="font-size: 0.8em; color: var(--accent-color); text-transform: uppercase; margin-bottom: 0.8em; font-weight: bold;">Display & Pace</div>
         <label style="display: flex; align-items: center; gap: 10px; margin-bottom: 1em; cursor: pointer;">
-            <input type="checkbox" id="toggle-bankroll"> Hide Bankroll
+            <input type="checkbox" id="toggle-casual"> Casual Mode (No AP Grader)
         </label>
-        <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+        <label style="display: flex; align-items: center; gap: 10px; margin-bottom: 1em; cursor: pointer;">
+            <input type="checkbox" id="toggle-bankroll"> Freeplay (Infinite Bankroll)
+        </label>
+        <label style="display: flex; align-items: center; gap: 10px; margin-bottom: 1em; cursor: pointer;">
             <input type="checkbox" id="toggle-totals"> Hide Hand Totals
         </label>
+        <label style="display: flex; align-items: center; gap: 10px; margin-bottom: 1em; cursor: pointer;">
+            <input type="checkbox" id="toggle-banner"> Disable Victory Banner
+        </label>
+        <label style="display: flex; align-items: center; gap: 10px; margin-bottom: 1em; cursor: pointer;">
+            <input type="checkbox" id="toggle-sound"> Enable Audio
+        </label>
+        
+        <label style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1em;">
+            Game Speed:
+            <select id="config-speed">
+                <option value="1200">Slow</option>
+                <option value="800" selected>Normal</option>
+                <option value="300">Fast</option>
+                <option value="0">Instant</option>
+            </select>
+        </label>
+
+        <div style="margin-top: 1.5em; padding-top: 1em; border-top: 1px solid rgba(255,255,255,0.2);">
+            <div style="font-size: 0.8em; color: var(--accent-color); text-transform: uppercase; margin-bottom: 0.8em; font-weight: bold;">Table Rules</div>
+            
+            <label style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8em; font-size: 0.9em;">
+                Decks:
+                <select id="config-decks" style="background: #222; color: white; border: 1px solid #555; padding: 2px 5px; border-radius: 4px;">
+                    <option value="2">2</option>
+                    <option value="6" selected>6</option>
+                    <option value="8">8</option>
+                </select>
+            </label>
+
+            <label style="display: flex; flex-direction: column; gap: 5px; font-size: 0.9em;">
+                Deck Penetration: <span id="pen-value" style="color: #2ecc71; font-weight: bold;">75%</span>
+                <input type="range" id="config-penetration" min="50" max="85" value="75" style="width: 100%;">
+            </label>
+        </div>
     </div>
 
     <div id="game-message" style="position: absolute; top: 45%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.85); color: #ffffff; padding: 1em 2em; border-radius: 8px; font-weight: 900; font-size: 1.8em; z-index: 100; text-align: center; border: 2px solid var(--accent-color); display: none; text-transform: uppercase; letter-spacing: 2px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
@@ -74,25 +150,33 @@ permalink: "/games/blackjack/"
     </div>
 
     <div id="ap-feedback">Basic Strategy Error</div>
-    
-    <div style="position: absolute; top: 0; left: 0; width: 100%; padding: 1em; display: flex; justify-content: space-between; z-index: 10;">
-        <a href="/games/" style="color: rgba(255,255,255,0.6); text-decoration: none; border: none; font-size: 1.2em;"><i class="icon solid fa-chevron-left"></i> Exit</a>
-        <button id="btn-fullscreen" style="background: transparent; border: none; color: rgba(255,255,255,0.6); font-size: 1.2em; padding: 0; box-shadow: none;"><i class="icon solid fa-expand"></i></button>
+
+    <div id="dealer-zone" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding-top: 4em; position: relative;">
+        <div id="dealer-score" style="background: var(--accent-color); padding: 0.2em 0.8em; border-radius: 20px; font-size: 0.8em; font-weight: bold; margin-bottom: 1em; opacity: 0; z-index: 5;">0</div>
+        <div id="dealer-cards"></div>
     </div>
 
-    <div id="dealer-zone" style="flex: 0 0 40%; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; border-bottom: 1px solid rgba(255,255,255,0.05);">
-        <div style="color: rgba(255,255,255,0.3); text-transform: uppercase; letter-spacing: 2px; font-size: 0.7em; font-weight: bold; margin-bottom: 1em;">Dealer must hit soft 17</div>
-        <div id="dealer-cards" style="display: flex; gap: 0.5em; height: 120px;">
-            <div style="width: 85px; height: 120px; border: 2px dashed rgba(255,255,255,0.2); border-radius: 8px;"></div>
-        </div>
-        <div id="dealer-score" style="background: rgba(0,0,0,0.5); padding: 0.2em 0.8em; border-radius: 20px; font-size: 0.8em; font-weight: bold; margin-top: 1em; opacity: 0;">0</div>
+    <div class="felt-text">
+        <h2>Blackjack Pays 3 to 2</h2>
+        <p>Dealer must draw to 16, and stand on all 17s</p>
     </div>
 
-    <div id="player-zone" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; padding-bottom: 2em; position: relative;">
-        <div id="player-score" style="background: var(--accent-color); padding: 0.2em 0.8em; border-radius: 20px; font-size: 0.8em; font-weight: bold; margin-bottom: 1em; opacity: 0;">0</div>
+    <div id="player-zone" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; padding-bottom: 2em; position: relative; z-index: 5;">
         
-        <div id="table-bet-bubble" class="table-bet-bubble" style="display: none;">$0</div>
+        <div id="table-bet-area" style="display: none; position: absolute; bottom: 150px; left: 50%; transform: translateX(-50%); align-items: center; justify-content: center; width: 100px; height: 100px;">
+            
+            <div id="insurance-bet-area" style="position: absolute; top: -40px; font-size: 0.75em; color: #f1c40f; text-transform: uppercase; letter-spacing: 2px; border-bottom: 2px solid rgba(255,255,255,0.2); padding-bottom: 5px; display: none; width: 220px; text-align: center;">
+                Insurance Pays 2:1
+                <div id="insurance-chip-stack" style="position: absolute; top: 15px; left: 50%; transform: translateX(-50%); height: 0;"></div>
+            </div>
 
+            <div style="width: 80px; height: 80px; border: 3px solid rgba(255,255,255,0.2); border-radius: 50%; position: absolute; z-index: 1;"></div>
+            <div id="chip-stack" style="position: relative; z-index: 2; width: 40px; height: 40px;"></div>
+            
+            <div id="table-bet-bubble" class="table-bet-bubble">$0</div>
+        </div>
+
+        <div id="player-score" style="background: var(--accent-color); padding: 0.2em 0.8em; border-radius: 20px; font-size: 0.8em; font-weight: bold; margin-bottom: 0.5em; opacity: 0;">0</div>
         <div id="player-cards" class="hand-cards">
             <div style="width: 85px; height: 120px; border: 2px dashed rgba(255,255,255,0.2); border-radius: 8px;"></div>
         </div>

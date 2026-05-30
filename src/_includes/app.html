@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <title>{{ title }} - The Junto Press</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+        <link rel="stylesheet" href="/assets/css/main.css" />
+        <link rel="stylesheet" href="/assets/css/custom.css" />
+        
+        <style>
+            /* APP SHELL OVERRIDES */
+            html, body {
+                margin: 0 !important; 
+                padding: 0 !important; /* This kills the 6em website header push! */
+                width: 100vw; 
+                height: 100vh; /* Fallback for older browsers */
+                height: 100dvh; /* Dynamic height for modern mobile browsers */
+                overflow: hidden; 
+                background-color: #0b2b1d; 
+                color: #ffffff;
+                font-family: 'Inter', sans-serif;
+                -webkit-user-select: none;
+                user-select: none; 
+            }
+        </style>
+    </head>
+    <body>
+        {{ content }}
+    </body>
+</html>
